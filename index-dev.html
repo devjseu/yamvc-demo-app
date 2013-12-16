@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Liker example</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="assets/less/style.css">
+</head>
+<body>
+<div id="container">
+
+</div>
+<!-- Template - MASK -->
+<script type="text/html" id="tpl-mask">
+    <div class="mask-container">
+        <div class="mask-horizontal-center">
+            <div class="mask-vertical-center">
+                <div class="bubblingG">
+                        <span id="bubblingG_1">
+                        </span>
+                        <span id="bubblingG_2">
+                        </span>
+                        <span id="bubblingG_3">
+                        </span>
+                </div>
+                <p>{{locale.pleaseWait}}</p>
+            </div>
+        </div>
+    </div>
+</script>
+<!-- Template - LAYOUT -->
+<script type="text/html" id="tpl-layout">
+    <div class="layout">
+        <header class="balance-container">
+
+        </header>
+        <nav class="layout-action-bar">
+
+        </nav>
+        <section>
+            <figure class="balance-chart">
+                <div class="container">
+
+                </div>
+            </figure>
+            <aside>
+                <nav class="menu">
+
+                </nav>
+            </aside>
+        </section>
+        <footer>
+
+        </footer>
+    </div>
+</script>
+<!-- Template - BALANCE BAR -->
+<script type="text/html" id="tpl-bar-balance">
+    <div class="bar-balance-container">
+        <p class="bar-balance-current">{{locale.currentBalance}}: {{balance.resources}} zł</p>
+
+        <div class="bar-balance-container-2">
+            <ul class="bar-balance-container-3">
+                <li class="bar-balance-expenses">-{{balance.expenses}} zł</li>
+                <li class="bar-balance-resources">{{balance.available}} zł</li>
+            </ul>
+            <div class="bar-balance-legend">
+                <div>{{locale.legend}}</div>
+                <p class="bar-balance-legend-expenses">{{locale.expenses}}</p>
+
+                <p class="bar-balance-legend-resources">{{locale.resources}}</p>
+            </div>
+        </div>
+    </div>
+</script>
+<!-- Template - MENU -->
+<script type="text/html" id="tpl-menu">
+    <div class="menu-action">
+    </div>
+</script>
+<!-- Template - ACTION BAR -->
+<script type="text/html" id="tpl-bar-action">
+    <ul class="bar-action">
+        <li class="add-expense"></li>
+        <li class="add-income"></li>
+    </ul>
+</script>
+<!-- Template - BUTTON -->
+<script type="text/html" id="tpl-button">
+    <div class="btn-container">
+        <a href="#" class="button">{{locale.text}}</a>
+    </div>
+</script>
+<!-- Template - CHART -->
+<script type="text/html" id="tpl-chart">
+    <div class="chart">
+        <div class="chart-container"></div>
+    </div>
+</script>
+<!-- Template - WINDOW -->
+<script type="text/html" id="tpl-window">
+    <div class="window-container">
+        <div class="window-horizontal-center">
+            <div class="window-vertical-center">
+                <div class="top-bar"></div>
+                <div class="container">
+                    <form>
+                        <p>
+                            <label for="i-name">{{locale.name}}</label>
+                            <input placeholder="{{locale.exName}}" id="i-name" name="name" />
+                        </p>
+                        <p>
+                            <label for="i-date">{{locale.date}}</label>
+                            <input placeholder="{{locale.exDate}}" id="i-date" name="date" />
+                        </p>
+                        <p>
+                            <label for="i-value">{{locale.value}}</label>
+                            <input placeholder="{{locale.exValue}}" id="i-value" name="value" />
+                        </p>
+                    </form>
+                    <div class="form-errors">{{form.errors}}</div>
+                </div>
+                <div class="bottom-bar"></div>
+            </div>
+        </div>
+    </div>
+</script>
+<!-- Use latest version less copy of current release -->
+<script src="assets/js/lib/yamvc/YAMVC.js"></script>
+<script src="src/views/Mask.js"></script>
+<script type="text/javascript">
+    // Add mask as soon as possible
+    (function (window, undefined) {
+        var app = window.app || {};
+        app.mask = new app.views.Mask({
+            config: {
+                tpl: 'tpl-mask',
+                renderTo: 'body',
+                models: {
+                    locale: new yamvc.Model({
+                        config: {
+                            namespace: 'locale'
+                        },
+                        data: {
+                            pleaseWait: 'Please wait...'
+                        }
+                    })
+                }
+            }
+        });
+        app.mask.render();
+        app.mask.show();
+        window.app = app;
+    }(window));
+</script>
+<script src="src/views/Layout.js"></script>
+<script src="src/views/Button.js"></script>
+<script src="src/views/Bar.js"></script>
+<script src="src/views/Menu.js"></script>
+<script src="src/views/Chart.js"></script>
+<script src="src/views/Window.js"></script>
+<script src="src/views/Window/AddIncome.js"></script>
+<script src="src/views/Bar/Balance.js"></script>
+<script src="src/models/Balance.js"></script>
+<script src="src/models/Chart.js"></script>
+<script src="src/main.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load('visualization', '1', {packages: ['corechart']});
+</script>
+</body>
+</html>

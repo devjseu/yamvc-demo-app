@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "Button.js",
+  "sourceRoot": "",
+  "sources": [
+    "Button.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;CAAA,KAAA,YAAA;KAAA,aAAA;;CAAA,CAAA,CAAA,CAAoB,EAAR;;CAAZ,CACA,CAAG,CAAsB,CAAzB;;CADA,CAEA,CAAQ,EAAR,CAAc;;CAFd,CAIA,CAAS,CAAU,CAAL,CAAd,GACE;CACE,EAAA,KAAA;CAAA,GADD,mDACC;CAAA,CAAuB,CAAvB,CAAA,CAAK;CADP,UAEE;CAHK,EACP;;CALF,CAUA,CAAG,EAAM,CAAT;;CAVA,CAYA,CAAA,GAAM;CAZN"
+}

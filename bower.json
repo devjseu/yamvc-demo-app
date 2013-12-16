@@ -1,0 +1,9 @@
+{
+    "name": "culturalMe",
+    "version": "1.0.0",
+    "dependencies": {
+        "jquery": ">= 1.9.0",
+        "qunit" : ">=1.12.0",
+        "ydn-db" : "*"
+    }
+}

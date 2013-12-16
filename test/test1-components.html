@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Component tests</title>
+    <link rel="stylesheet" href="../assets/js/lib/qunit/qunit/qunit.css">
+    <link rel="stylesheet" href="../assets/less/style.css">
+</head>
+<body>
+<div id="qunit"></div>
+<div id="qunit-fixture"></div>
+<script src="polyfill.js"></script>
+<script src="../assets/js/lib/qunit/qunit/qunit.js"></script>
+
+<!-- Use latest versionless copy of current release -->
+<script src="../assets/js/lib/yamvc/YAMVC.js"></script>
+<script src="../src/models/Balance.js"></script>
+<script src="../src/views/Button.js"></script>
+<script src="../src/views/Bar/Balance.js"></script>
+<script src="../src/views/Mask.js"></script>
+<script src="test1-components.js"></script>
+<div id="container">
+
+</div>
+<script type="text/html" id="tpl-button">
+    <div class="btn-container">
+        <button class="button">{{locale.add}}</button>
+    </div>
+</script>
+<script type="text/html" id="tpl-bar-balance">
+    <div class="bar-balance-container">
+        <p class="bar-balance-current">{{locale.currentBalance}}: {{balance.resources}} zł</p>
+
+        <div class="bar-balance-container-2">
+            <ul class="bar-balance-container-3">
+                <li class="bar-balance-expenses">-{{balance.expenses}} zł</li>
+                <li class="bar-balance-resources">{{balance.available}} zł</li>
+            </ul>
+            <div class="bar-balance-legend">
+                <div>{{locale.legend}}</div>
+                <p class="bar-balance-legend-expenses">{{locale.expenses}}</p>
+
+                <p class="bar-balance-legend-resources">{{locale.resources}}</p>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="tpl-mask">
+    <div class="mask-container">
+        <div class="mask-horizontal-center">
+            <div class="mask-vertical-center">
+                <div class="bubblingG">
+                        <span id="bubblingG_1">
+                        </span>
+                        <span id="bubblingG_2">
+                        </span>
+                        <span id="bubblingG_3">
+                        </span>
+                </div>
+                <p>{{locale.pleaseWait}}</p>
+            </div>
+        </div>
+    </div>
+</script>
+</body>
+</html>
