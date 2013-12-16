@@ -27,7 +27,7 @@ Attention! Some of component tests are problematic in PhantomJS but runs fine in
 ##Build
 You are also able to build project by typing
 ```javascript
-grunt concat
+grunt
 ```
 
 ##Run
