@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Liker example</title>
+    <title>Demo application</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="assets/less/style.css">
 </head>
@@ -57,12 +57,12 @@
 <!-- Template - BALANCE BAR -->
 <script type="text/html" id="tpl-bar-balance">
     <div class="bar-balance-container">
-        <p class="bar-balance-current">{{locale.currentBalance}}: {{balance.resources}} zł</p>
+        <p class="bar-balance-current">{{locale.currentBalance}}: {{balance.resources}} €</p>
 
         <div class="bar-balance-container-2">
             <ul class="bar-balance-container-3">
-                <li class="bar-balance-expenses">-{{balance.expenses}} zł</li>
-                <li class="bar-balance-resources">{{balance.available}} zł</li>
+                <li class="bar-balance-expenses">-{{balance.expenses}} €</li>
+                <li class="bar-balance-resources">{{balance.available}} €</li>
             </ul>
             <div class="bar-balance-legend">
                 <div>{{locale.legend}}</div>
@@ -106,16 +106,16 @@
                 <div class="container">
                     <form>
                         <p>
-                            <label for="i-name">{{locale.name}}</label>
-                            <input placeholder="{{locale.exName}}" id="i-name" name="name" />
+                            <label for="form-name">{{locale.name}}</label>
+                            <input placeholder="{{locale.exName}}" id="form-name" name="name" />
                         </p>
                         <p>
-                            <label for="i-date">{{locale.date}}</label>
-                            <input placeholder="{{locale.exDate}}" id="i-date" name="date" />
+                            <label for="form-date">{{locale.date}}</label>
+                            <input placeholder="{{locale.exDate}}" id="form-date" name="date" />
                         </p>
                         <p>
-                            <label for="i-value">{{locale.value}}</label>
-                            <input placeholder="{{locale.exValue}}" id="i-value" name="value" />
+                            <label for="form-value">{{locale.value}}</label>
+                            <input placeholder="{{locale.exValue}}" id="form-value" name="value" />
                         </p>
                     </form>
                     <div class="form-errors">{{form.errors}}</div>
@@ -160,6 +160,7 @@
 <script src="src/views/Chart.js"></script>
 <script src="src/views/Window.js"></script>
 <script src="src/views/Window/AddIncome.js"></script>
+<script src="src/views/Window/AddExpense.js"></script>
 <script src="src/views/Bar/Balance.js"></script>
 <script src="src/models/Balance.js"></script>
 <script src="src/models/Chart.js"></script>

@@ -49,22 +49,6 @@ Layout::init = (all...)->
         tpl: 'tpl-chart'
         renderTo: '.container'
 
-  #window - for test only
-  window = new app.views.window.AddIncome
-    config:
-      id: 'add-income'
-      tpl: 'tpl-window'
-      renderTo: 'body'
-  window.render()
-
-  #window - for test only
-  window2 = new app.views.Window
-    config:
-      id: 'window-2'
-      tpl: 'tpl-window'
-      renderTo: 'body'
-  window2.render()
-
 app.views.Layout = Layout
 
 window.app = app

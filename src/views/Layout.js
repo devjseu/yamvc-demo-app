@@ -17,11 +17,11 @@
   });
 
   Layout.prototype.init = function() {
-    var all, config, window, window2;
+    var all, config;
     all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     yamvc.View.prototype.init.apply(this, all);
     config = this.get('config');
-    config.views = {
+    return config.views = {
       barBalance: new app.views.BarBalance({
         config: {
           id: 'current-balance',
@@ -65,22 +65,6 @@
         }
       })
     };
-    window = new app.views.window.AddIncome({
-      config: {
-        id: 'add-income',
-        tpl: 'tpl-window',
-        renderTo: 'body'
-      }
-    });
-    window.render();
-    window2 = new app.views.Window({
-      config: {
-        id: 'window-2',
-        tpl: 'tpl-window',
-        renderTo: 'body'
-      }
-    });
-    return window2.render();
   };
 
   app.views.Layout = Layout;

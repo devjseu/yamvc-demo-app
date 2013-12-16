@@ -14,6 +14,24 @@
         renderTo: '#container'
       }
     });
+    app.income = new app.views.window.AddIncome({
+      config: {
+        autoCreate: true,
+        id: 'add-income',
+        tpl: 'tpl-window',
+        renderTo: 'body'
+      }
+    });
+    app.income.render();
+    app.expense = new app.views.window.AddExpense({
+      config: {
+        autoCreate: true,
+        id: 'add-expense',
+        tpl: 'tpl-window',
+        renderTo: 'body'
+      }
+    });
+    app.expense.render();
     app.controlles = {
       main: new yamvc.Controller({
         config: {

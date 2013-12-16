@@ -11,8 +11,28 @@ app.init = ->
       tpl: 'tpl-layout',
       renderTo: '#container'
 
+  #window are rendered outside layout
+  #window - add income
+  app.income = new app.views.window.AddIncome
+    config:
+      autoCreate : true
+      id: 'add-income'
+      tpl: 'tpl-window'
+      renderTo: 'body'
+  app.income.render()
+
+  #window - add expense
+  app.expense = new app.views.window.AddExpense
+    config:
+      autoCreate : true
+      id: 'add-expense'
+      tpl: 'tpl-window'
+      renderTo: 'body'
+  app.expense.render()
+
   #define controllers
   app.controlles =
+    #main controller
     main: new yamvc.Controller
       config:
         name: 'Main'
@@ -28,6 +48,7 @@ app.init = ->
                   app.mask.hide()
                 500
               )
+          #for DOM elements
           '.add-expense a':
             click : (view, e)->
               e.preventDefault()

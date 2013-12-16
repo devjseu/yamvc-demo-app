@@ -18,6 +18,28 @@
     return this;
   });
 
+  AddExpense.prototype.initConfig = function() {
+    var all, config;
+    all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    config = this.get('config');
+    config.models = {
+      locale: new yamvc.Model({
+        config: {
+          namespace: 'locale'
+        },
+        data: {
+          name: 'Name',
+          date: 'Date',
+          value: 'Value',
+          exName: 'e.g Book',
+          exDate: 'e.g 23/12/2013',
+          exValue: 'e.g 25.50'
+        }
+      })
+    };
+    return app.views.Window.prototype.initConfig.apply(this, all);
+  };
+
   AddExpense.prototype.bindEvents = function() {
     var all;
     all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -28,9 +50,8 @@
   AddExpense.prototype.addClass = function() {
     var form;
     form = this.queryEl('form');
-    form.setAttribute('class', 'add-income');
-    return form.setAttribute('data-type', 'add-income\
-  ');
+    form.setAttribute('class', 'add-expenses');
+    return form.setAttribute('data-type', 'add-expenses');
   };
 
   app.views.window.AddExpense = AddExpense;

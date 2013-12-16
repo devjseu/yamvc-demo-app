@@ -521,16 +521,19 @@ body {
   position: absolute;
   bottom: 0;
 }
-.add-income {
+.add-income,
+.add-expenses {
   width: 70%;
   margin: 0 auto;
 }
-.add-income p {
+.add-income p,
+.add-expenses p {
   padding: 10px;
   overflow: hidden;
   line-height: 20px;
 }
-.add-income p label {
+.add-income p label,
+.add-expenses p label {
   display: block;
   width: 50px;
   float: left;
@@ -538,9 +541,14 @@ body {
   line-height: 20px;
   height: 20px;
 }
-.add-income p input {
+.add-income p input,
+.add-expenses p input {
   display: block;
   width: 200px;
   height: 20px;
   float: left;
+}
+.add-income p input.invalid,
+.add-expenses p input.invalid {
+  background: indianred;
 }

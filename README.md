@@ -12,7 +12,7 @@ To run grunt and qunit in console go to root directory of project and type follo
 ```javascript
 npm install
 ```
-To install all necessary libraries needed to run project in browser, type:
+To install all necessary libraries needed to run project in the browser, type:
 ```javascript
 bower install
 ```
@@ -25,7 +25,7 @@ grunt qunit
 Attention! Some of component tests are problematic in PhantomJS but runs fine in browser environment
 
 ##Build
-You are also able to whole build project by
+You are also able to build project by typing
 ```javascript
 grunt concat
 ```

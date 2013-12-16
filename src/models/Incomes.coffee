@@ -12,9 +12,13 @@ Incomes::init = (all...)->
   yamvc.Model::init.apply(@, all)
 
 Incomes::initConfig = (all...)->
+
   config = @get('config')
+  opts = @get('initOpts')
   #define model namespace
   config.namespace = 'incomes'
+  #define default value
+  opts.data.date = opts.data.date || +new Date
   yamvc.Model::initConfig.apply(@, all)
 
 app.models.Incomes = Incomes

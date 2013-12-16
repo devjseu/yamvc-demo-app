@@ -23,10 +23,12 @@
   };
 
   Incomes.prototype.initConfig = function() {
-    var all, config;
+    var all, config, opts;
     all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     config = this.get('config');
+    opts = this.get('initOpts');
     config.namespace = 'incomes';
+    opts.data.date = opts.data.date || +(new Date);
     return yamvc.Model.prototype.initConfig.apply(this, all);
   };
 
