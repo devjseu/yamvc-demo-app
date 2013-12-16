@@ -24,14 +24,50 @@ AddExpense::initConfig = (all...)->
         date: 'Date'
         value: 'Value'
         exName: 'e.g Book'
-        exDate: 'e.g 23/12/2013'
+        exDate: 'e.g 23/9/2013'
         exValue: 'e.g 25.50'
+    expense: new app.models.Expense
+      config:
+        namespace: 'expenses'
+        proxy: new app.data.proxy.YdnDb
+          config:
+            db: app.data.db
   app.views.Window::initConfig.apply(@, all)
+  @bindModelEvents()
 
 #bind additional events
 AddExpense::bindEvents = (all...)->
   app.views.Window::bindEvents.apply(@, all)
   @addListener('render', @addClass.bind(@))
+
+AddExpense::bindModelEvents = ()->
+  @getModel('expense').addListener('saved', @afterModelSave.bind(@))
+
+AddExpense::processForm = ()->
+  test = []
+  inputs = @queryEls('form input')
+  @validateName()
+  @validateDate()
+  @validateValue()
+  results = {}
+  i = 0
+  l = inputs.length
+  while (i < l)
+    test.push 1 if inputs[i].getAttribute('class').search(/invalid/) > -1
+    results[inputs[i].name] = inputs[i].value
+    i++
+  if test.length == 0
+    results['date'] = +new Date(@parseDate(results['date']))
+    @getModel('expense').setData(results)
+    app.mask.show()
+    @getModel('expense').save()
+  @
+
+AddExpense::afterModelSave = ()->
+  @queryEl('form').reset()
+  app.mask.hide()
+  app.models.balance.load()
+  @hide()
 
 #add custom class
 AddExpense::addClass = ()->

@@ -4,6 +4,32 @@ yamvc = window.yamvc
 
 #app init func
 app.init = ->
+  #db connection
+  app.data.db = new app.data.Db
+    config:
+      name: 'culturalMe'
+      schema:
+        stores: [{
+          name: 'incomes'
+          keyPath: 'id'
+          autoIncrement: true,
+          indexes: [
+            {
+              keyPath: 'date'
+            }
+          ]
+        },
+        {
+          name: 'expenses'
+          keyPath: 'id'
+          autoIncrement: true,
+          indexes: [
+            {
+              keyPath: 'date'
+            }
+          ]
+        }]
+
   #layout
   app.layout = new app.views.Layout
     config:
@@ -15,7 +41,7 @@ app.init = ->
   #window - add income
   app.income = new app.views.window.AddIncome
     config:
-      autoCreate : true
+      autoCreate: true
       id: 'add-income'
       tpl: 'tpl-window'
       renderTo: 'body'
@@ -24,7 +50,7 @@ app.init = ->
   #window - add expense
   app.expense = new app.views.window.AddExpense
     config:
-      autoCreate : true
+      autoCreate: true
       id: 'add-expense'
       tpl: 'tpl-window'
       renderTo: 'body'
@@ -32,42 +58,43 @@ app.init = ->
 
   #define controllers
   app.controlles =
-    #main controller
+  #main controller
     main: new yamvc.Controller
       config:
         name: 'Main'
         views:
           layout: app.layout
-        #delegate events
+      #delegate events
         events:
-          #for views
+        #for views
           $layout:
             render: ()->
+              app.models.balance.load()
               setTimeout(
                 ->
                   app.mask.hide()
                 500
               )
-          #for DOM elements
+        #for DOM elements
           '.add-expense a':
-            click : (view, e)->
+            click: (view, e)->
               e.preventDefault()
               this.onExpenseBtnClick()
           '.add-income a':
-            click : (view, e)->
+            click: (view, e)->
               e.preventDefault()
               this.onIncomeBtnClick()
           '[yamvc-id="list-incomes"] a':
-            click : (view, e)->
+            click: (view, e)->
               e.preventDefault()
               this.onListIncomesBtnClick()
           '[yamvc-id="list-expenses"] a':
-            click : (view, e)->
+            click: (view, e)->
               e.preventDefault()
               this.onListExpensesBtnClick()
-      onExpenseBtnClick : ()->
+      onExpenseBtnClick: ()->
         yamvc.ViewManager.get('add-expense').show()
-      onIncomeBtnClick : ()->
+      onIncomeBtnClick: ()->
         yamvc.ViewManager.get('add-income').show()
       onListIncomesBtnClick: ()->
         console.log('list incomes click')

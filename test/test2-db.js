@@ -29,7 +29,7 @@
   asyncTest("DB proxy tests - insert single document", function() {
     var incomes, saved;
     expect(1);
-    incomes = new app.models.Incomes({
+    incomes = new app.models.Income({
       config: {
         proxy: new app.data.proxy.YdnDb({
           config: {
@@ -54,7 +54,7 @@
   asyncTest("DB proxy tests - read single document", function() {
     var afterSave, incomes, loaded, saved;
     expect(1);
-    incomes = new app.models.Incomes({
+    incomes = new app.models.Income({
       config: {
         proxy: new app.data.proxy.YdnDb({
           config: {
@@ -79,7 +79,7 @@
     };
     return afterSave = function() {
       var incomes2;
-      incomes2 = new app.models.Incomes({
+      incomes2 = new app.models.Income({
         config: {
           proxy: new app.data.proxy.YdnDb({
             config: {
@@ -98,7 +98,7 @@
   asyncTest("DB proxy tests - update single document", function() {
     var incomes, update;
     expect(1);
-    incomes = new app.models.Incomes({
+    incomes = new app.models.Income({
       config: {
         proxy: new app.data.proxy.YdnDb({
           config: {
@@ -130,7 +130,7 @@
   asyncTest("DB proxy tests - destroy single document", function() {
     var incomes, remove, save;
     expect(1);
-    incomes = new app.models.Incomes({
+    incomes = new app.models.Income({
       config: {
         proxy: new app.data.proxy.YdnDb({
           config: {

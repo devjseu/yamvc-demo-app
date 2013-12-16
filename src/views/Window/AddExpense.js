@@ -32,12 +32,23 @@
           date: 'Date',
           value: 'Value',
           exName: 'e.g Book',
-          exDate: 'e.g 23/12/2013',
+          exDate: 'e.g 23/9/2013',
           exValue: 'e.g 25.50'
+        }
+      }),
+      expense: new app.models.Expense({
+        config: {
+          namespace: 'expenses',
+          proxy: new app.data.proxy.YdnDb({
+            config: {
+              db: app.data.db
+            }
+          })
         }
       })
     };
-    return app.views.Window.prototype.initConfig.apply(this, all);
+    app.views.Window.prototype.initConfig.apply(this, all);
+    return this.bindModelEvents();
   };
 
   AddExpense.prototype.bindEvents = function() {
@@ -45,6 +56,43 @@
     all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     app.views.Window.prototype.bindEvents.apply(this, all);
     return this.addListener('render', this.addClass.bind(this));
+  };
+
+  AddExpense.prototype.bindModelEvents = function() {
+    return this.getModel('expense').addListener('saved', this.afterModelSave.bind(this));
+  };
+
+  AddExpense.prototype.processForm = function() {
+    var i, inputs, l, results, test;
+    test = [];
+    inputs = this.queryEls('form input');
+    this.validateName();
+    this.validateDate();
+    this.validateValue();
+    results = {};
+    i = 0;
+    l = inputs.length;
+    while (i < l) {
+      if (inputs[i].getAttribute('class').search(/invalid/) > -1) {
+        test.push(1);
+      }
+      results[inputs[i].name] = inputs[i].value;
+      i++;
+    }
+    if (test.length === 0) {
+      results['date'] = +new Date(this.parseDate(results['date']));
+      this.getModel('expense').setData(results);
+      app.mask.show();
+      this.getModel('expense').save();
+    }
+    return this;
+  };
+
+  AddExpense.prototype.afterModelSave = function() {
+    this.queryEl('form').reset();
+    app.mask.hide();
+    app.models.balance.load();
+    return this.hide();
   };
 
   AddExpense.prototype.addClass = function() {

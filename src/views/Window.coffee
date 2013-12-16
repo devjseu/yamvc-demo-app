@@ -49,6 +49,7 @@ Window::initConfig = (all...)->
             text: 'Add'
   yamvc.View::initConfig.apply(@, all)
 
+#close button
 Window::bindClose = ()->
   me = @
   @queryEl('a').addEventListener(
@@ -65,7 +66,7 @@ Window::bindDOMEvents = ()->
   @queryEl('#form-name').addEventListener('keyup',@validateName.bind(@))
   @queryEl('#form-date').addEventListener('keyup',@validateDate.bind(@))
   @queryEl('#form-value').addEventListener('keyup',@validateValue.bind(@))
-  @queryEl('a.button').addEventListener('click',@processForm.bind(@))
+  @queryEl('.bottom-bar a').addEventListener('click',@processForm.bind(@), false)
 
 #abstract
 Window::processForm = () ->

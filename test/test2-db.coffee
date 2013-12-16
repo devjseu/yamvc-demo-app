@@ -19,7 +19,7 @@ asyncTest(
   "DB proxy tests - insert single document"
   ->
     expect 1
-    incomes = new app.models.Incomes
+    incomes = new app.models.Income
       config:
         proxy: new app.data.proxy.YdnDb
           config:
@@ -54,7 +54,7 @@ asyncTest(
   ->
     expect 1
     #create model
-    incomes = new app.models.Incomes
+    incomes = new app.models.Income
       config:
         proxy: new app.data.proxy.YdnDb
           config:
@@ -86,7 +86,7 @@ asyncTest(
 
     #callback after create
     afterSave = ->
-      incomes2 = new app.models.Incomes
+      incomes2 = new app.models.Income
         config:
           proxy: new app.data.proxy.YdnDb
             config:
@@ -104,7 +104,7 @@ asyncTest(
   ->
     expect 1
     #create model
-    incomes = new app.models.Incomes
+    incomes = new app.models.Income
       config:
         proxy: new app.data.proxy.YdnDb
           config:
@@ -145,7 +145,7 @@ asyncTest(
   ->
     expect 1
     #create model
-    incomes = new app.models.Incomes
+    incomes = new app.models.Income
       config:
         proxy: new app.data.proxy.YdnDb
           config:

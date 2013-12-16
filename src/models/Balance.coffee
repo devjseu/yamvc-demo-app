@@ -26,8 +26,36 @@ Balance::initConfig = (all...)->
   yamvc.Model::initConfig.apply(@, all)
 
 Balance::setRange = (from, to)->
+  @set 'from', from
+  @set 'to', to
 
 Balance::load = (all...)->
+  me = @
+  balance = 0;
+  results = []
+  date = new Date();
+  date2 = new Date();
+  date.setFullYear(2013,11,1);
+  date2.setFullYear(2014,1,1);
+  db = app.data.db.getConnection()
+  q = db.from('incomes')
+  q
+  .where('date', '>=', date.getTime(), '<', date2.getTime())
+  .list()
+  .done(
+      (incomes)->
+        i = 0
+        l = incomes.length
+        while (i < l)
+          balance += parseFloat(incomes[i].value)
+          i++
+        func()
+    )
+  func = ()->
+    console.log(me)
+    me.$set('resources', balance)
+
+  @
 
 Balance::recaulculate = (all...)->
 

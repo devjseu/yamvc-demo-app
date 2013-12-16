@@ -82,7 +82,7 @@
     this.queryEl('#form-name').addEventListener('keyup', this.validateName.bind(this));
     this.queryEl('#form-date').addEventListener('keyup', this.validateDate.bind(this));
     this.queryEl('#form-value').addEventListener('keyup', this.validateValue.bind(this));
-    return this.queryEl('a.button').addEventListener('click', this.processForm.bind(this));
+    return this.queryEl('.bottom-bar a').addEventListener('click', this.processForm.bind(this), false);
   };
 
   Window.prototype.processForm = function() {};

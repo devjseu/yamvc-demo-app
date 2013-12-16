@@ -1406,12 +1406,21 @@
         me.fireEvent('partialRender', null, me, element);
         return me;
     };
+
     /**
      *
      * @param selector
      */
     View.prototype.queryEl = function (selector) {
         return this.get('el').querySelector(selector);
+    };
+
+    /**
+     *
+     * @param selector
+     */
+    View.prototype.queryEls = function (selector) {
+        return this.get('el').querySelectorAll(selector);
     };
 
     /**

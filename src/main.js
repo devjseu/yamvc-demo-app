@@ -7,6 +7,34 @@
   yamvc = window.yamvc;
 
   app.init = function() {
+    app.data.db = new app.data.Db({
+      config: {
+        name: 'culturalMe',
+        schema: {
+          stores: [
+            {
+              name: 'incomes',
+              keyPath: 'id',
+              autoIncrement: true,
+              indexes: [
+                {
+                  keyPath: 'date'
+                }
+              ]
+            }, {
+              name: 'expenses',
+              keyPath: 'id',
+              autoIncrement: true,
+              indexes: [
+                {
+                  keyPath: 'date'
+                }
+              ]
+            }
+          ]
+        }
+      }
+    });
     app.layout = new app.views.Layout({
       config: {
         autoCreate: true,
@@ -42,6 +70,7 @@
           events: {
             $layout: {
               render: function() {
+                app.models.balance.load();
                 return setTimeout(function() {
                   return app.mask.hide();
                 }, 500);

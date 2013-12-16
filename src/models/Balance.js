@@ -38,11 +38,38 @@
     return yamvc.Model.prototype.initConfig.apply(this, all);
   };
 
-  Balance.prototype.setRange = function(from, to) {};
+  Balance.prototype.setRange = function(from, to) {
+    this.set('from', from);
+    return this.set('to', to);
+  };
 
   Balance.prototype.load = function() {
-    var all;
+    var all, balance, date, date2, db, func, me, q, results;
     all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    me = this;
+    balance = 0;
+    results = [];
+    date = new Date();
+    date2 = new Date();
+    date.setFullYear(2013, 11, 1);
+    date2.setFullYear(2014, 1, 1);
+    db = app.data.db.getConnection();
+    q = db.from('incomes');
+    q.where('date', '>=', date.getTime(), '<', date2.getTime()).list().done(function(incomes) {
+      var i, l;
+      i = 0;
+      l = incomes.length;
+      while (i < l) {
+        balance += parseFloat(incomes[i].value);
+        i++;
+      }
+      return func();
+    });
+    func = function() {
+      console.log(me);
+      return me.$set('resources', balance);
+    };
+    return this;
   };
 
   Balance.prototype.recaulculate = function() {
