@@ -44,11 +44,10 @@
   };
 
   Balance.prototype.load = function() {
-    var all, balance, date, date2, db, func, me, q, results;
+    var all, balance, date, date2, db, func, me, q;
     all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     me = this;
     balance = 0;
-    results = [];
     date = new Date();
     date2 = new Date();
     date.setFullYear(2013, 11, 1);
@@ -66,8 +65,18 @@
       return func();
     });
     func = function() {
-      console.log(me);
-      return me.$set('resources', balance);
+      var q2;
+      q2 = db.from('expenses');
+      return q2.where('date', '>=', date.getTime(), '<', date2.getTime()).list().done(function(incomes) {
+        var i, l;
+        i = 0;
+        l = incomes.length;
+        while (i < l) {
+          balance -= parseFloat(incomes[i].value);
+          i++;
+        }
+        return me.$set('resources', balance);
+      });
     };
     return this;
   };

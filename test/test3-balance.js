@@ -28,7 +28,7 @@
   asyncTest("Calculate balance", function() {
     var incomes, saved;
     expect(1);
-    incomes = new app.models.Incomes({
+    incomes = new app.models.Income({
       config: {
         proxy: new app.data.proxy.YdnDb({
           config: {

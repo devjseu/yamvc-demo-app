@@ -56,9 +56,9 @@ module.exports = function (grunt) {
             },
             target: {
                 src: [
-                    'assets/js/lib/pouchdb/dist/pouchdb-nightly.js',
                     'assets/js/lib/YAMVC.js',
-                    'src/**/*.js'
+                    'src/**/*.js',
+                    'src/main.js'
                 ],
                 dest: devRelease
             }
