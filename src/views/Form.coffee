@@ -21,7 +21,6 @@ Form::bindEvents = ()->
 Form::initConfig = (all...)->
   config = @get 'config'
   config.width = config.width || 400
-  config.height = config.height || 300
   config.views = config.views || {}
   config.views.close = new app.views.Button
     config:
@@ -100,7 +99,6 @@ Form::validateValue = ()->
 Form::resize = ()->
   style = @queryEl('.window-vertical-center').style
   style.width = @getWidth() + 'px'
-  style.height = @getHeight() + 'px'
 
 Form::show = (all...)->
   yamvc.View::show.apply(this, all)

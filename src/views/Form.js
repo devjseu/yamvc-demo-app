@@ -28,7 +28,6 @@
     all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     config = this.get('config');
     config.width = config.width || 400;
-    config.height = config.height || 300;
     config.views = config.views || {};
     config.views.close = new app.views.Button({
       config: {
@@ -121,8 +120,7 @@
   Form.prototype.resize = function() {
     var style;
     style = this.queryEl('.window-vertical-center').style;
-    style.width = this.getWidth() + 'px';
-    return style.height = this.getHeight() + 'px';
+    return style.width = this.getWidth() + 'px';
   };
 
   Form.prototype.show = function() {

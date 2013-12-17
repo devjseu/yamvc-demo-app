@@ -505,6 +505,7 @@ body {
   width: 100px;
   margin: 0 auto;
   padding: 5px;
+  padding-bottom: 40px;
   border: 2px solid grey;
   border-left: 2px;
   border-top: 2px;

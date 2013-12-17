@@ -166,6 +166,7 @@
           app.views.layout.hide();
           if (app.views.layout2.isInDOM()) {
             app.views.layout2.show();
+            app.views.layout2.getChild('expenses').getModel('expenses').load();
           } else {
             app.views.layout2.render();
           }
@@ -176,6 +177,7 @@
           app.views.layout.hide();
           if (app.views.layout2.isInDOM()) {
             app.views.layout2.show();
+            app.views.layout2.getChild('incomes').getModel('incomes').load();
           } else {
             app.views.layout2.render();
           }
