@@ -107,15 +107,17 @@
                     <form>
                         <p>
                             <label for="form-name">{{locale.name}}</label>
-                            <input placeholder="{{locale.exName}}" id="form-name" name="name" />
+                            <input placeholder="{{locale.exName}}" id="form-name" name="name"/>
                         </p>
+
                         <p>
                             <label for="form-date">{{locale.date}}</label>
-                            <input placeholder="{{locale.exDate}}" id="form-date" name="date" />
+                            <input placeholder="{{locale.exDate}}" id="form-date" name="date"/>
                         </p>
+
                         <p>
                             <label for="form-value">{{locale.value}}</label>
-                            <input placeholder="{{locale.exValue}}" id="form-value" name="value" />
+                            <input placeholder="{{locale.exValue}}" id="form-value" name="value"/>
                         </p>
                     </form>
                     <div class="form-errors">{{form.errors}}</div>
@@ -123,6 +125,28 @@
                 <div class="bottom-bar"></div>
             </div>
         </div>
+    </div>
+</script>
+<!-- Template - LAYOUT-2 -->
+<script type="text/html" id="tpl-layout-2">
+    <div class="layout">
+        <nav class="layout-2-action-bar">
+        </nav>
+        <div class="container">
+        </div>
+        </section>
+        <footer>
+
+        </footer>
+    </div>
+</script>
+<!-- Template - Table -->
+<script type="text/html" id="tpl-table">
+    <div class="table-container">
+        <table>
+            <thead></thead>
+            <tbody></tbody>
+        </table>
     </div>
 </script>
 <!-- Use latest version less copy of current release -->
@@ -154,7 +178,7 @@
     }(window));
 </script>
 <script type="text/javascript" src="assets/js/lib/ydn-db/ydn.db-isw-core-qry.js"></script>
-<script src="build/culturalMe.min.js"></script>
+<script src="build/cultural-me.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">
     google.load('visualization', '1', {packages: ['corechart']});

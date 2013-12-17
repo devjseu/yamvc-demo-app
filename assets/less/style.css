@@ -220,6 +220,8 @@ body {
 }
 .btn-container {
   display: inline;
+  font-family: Courier;
+  font-size: 12px;
 }
 .btn-container a {
   text-decoration: none;
@@ -551,4 +553,19 @@ body {
 .add-income p input.invalid,
 .add-expenses p input.invalid {
   background: indianred;
+}
+.table-container {
+  width: 95%;
+  padding: 2.5%;
+  font-family: Courier;
+  font-size: 13px;
+}
+.table-container table {
+  width: 100%;
+}
+.table-container table thead {
+  border-bottom: 1px solid black;
+}
+.table-container table td {
+  padding: 5px;
 }

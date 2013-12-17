@@ -35,42 +35,71 @@
         }
       }
     });
-    app.layout = new app.views.Layout({
+    app.views.layout = new app.views.Layout({
       config: {
-        autoCreate: true,
+        id: 'layout',
         tpl: 'tpl-layout',
         renderTo: '#container'
       }
     });
-    app.income = new app.views.form.AddIncome({
+    app.views.layout2 = new app.views.Layout2({
       config: {
-        autoCreate: true,
+        id: 'layout-2',
+        tpl: 'tpl-layout-2',
+        renderTo: '#container'
+      }
+    });
+    app.views.income = new app.views.form.AddIncome({
+      config: {
         id: 'add-income',
         tpl: 'tpl-window',
         renderTo: 'body'
       }
     });
-    app.income.render();
-    app.expense = new app.views.form.AddExpense({
+    app.views.income.render();
+    app.views.expense = new app.views.form.AddExpense({
       config: {
-        autoCreate: true,
         id: 'add-expense',
         tpl: 'tpl-window',
         renderTo: 'body'
       }
     });
-    app.expense.render();
+    app.views.expense.render();
     app.controlles = {
       main: new yamvc.Controller({
         config: {
           name: 'Main',
           views: {
-            layout: app.layout
+            "layout": app.views.layout,
+            "layout-2": app.views.layout2
+          },
+          routes: {
+            "": 'home',
+            "show-expenses": 'showExpenses',
+            "show-incomes": 'showIncomes'
           },
           events: {
-            $layout: {
+            "$layout": {
               render: function() {
                 app.models.balance.load();
+                return setTimeout(function() {
+                  return app.mask.hide();
+                }, 500);
+              },
+              show: function() {
+                return setTimeout(function() {
+                  return app.mask.hide();
+                }, 500);
+              }
+            },
+            "$layout-2": {
+              render: function() {
+                console.log('test');
+                return setTimeout(function() {
+                  return app.mask.hide();
+                }, 500);
+              },
+              show: function() {
                 return setTimeout(function() {
                   return app.mask.hide();
                 }, 500);
@@ -88,6 +117,12 @@
                 return this.onIncomeBtnClick();
               }
             },
+            '.layout-2-action-bar .button': {
+              click: function(view, e) {
+                e.preventDefault();
+                return this.onBackBtnClick();
+              }
+            },
             '[yamvc-id="list-incomes"] a': {
               click: function(view, e) {
                 e.preventDefault();
@@ -102,6 +137,9 @@
             }
           }
         },
+        onBackBtnClick: function() {
+          return this.redirectTo('');
+        },
         onExpenseBtnClick: function() {
           return yamvc.ViewManager.get('add-expense').show();
         },
@@ -109,10 +147,40 @@
           return yamvc.ViewManager.get('add-income').show();
         },
         onListIncomesBtnClick: function() {
-          return console.log('list incomes click');
+          app.mask.show();
+          return this.redirectTo('show-incomes');
         },
         onListExpensesBtnClick: function() {
-          return console.log('list expenses click');
+          app.mask.show();
+          return this.redirectTo('show-expenses');
+        },
+        home: function() {
+          app.views.layout2.hide();
+          if (app.views.layout.isInDOM()) {
+            return app.views.layout.show();
+          } else {
+            return app.views.layout.render();
+          }
+        },
+        showExpenses: function() {
+          app.views.layout.hide();
+          if (app.views.layout2.isInDOM()) {
+            app.views.layout2.show();
+          } else {
+            app.views.layout2.render();
+          }
+          app.views.layout2.getChild('incomes').hide();
+          return app.views.layout2.getChild('expenses').show();
+        },
+        showIncomes: function() {
+          app.views.layout.hide();
+          if (app.views.layout2.isInDOM()) {
+            app.views.layout2.show();
+          } else {
+            app.views.layout2.render();
+          }
+          app.views.layout2.getChild('incomes').show();
+          return app.views.layout2.getChild('expenses').hide();
         }
       })
     };

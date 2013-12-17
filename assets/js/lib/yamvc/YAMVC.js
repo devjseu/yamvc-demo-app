@@ -1,4 +1,4 @@
-/*! YAMVC v0.1.3 - 2013-12-16 
+/*! YAMVC v0.1.4 - 2013-12-17 
  *  License:  */
 (function (window, undefined) {
     "use strict";
@@ -539,6 +539,7 @@
         me.set('views', config.views || {});
         me.initConfig();
         me.renderViews();
+        me.restoreRouter();
         return me;
     };
 
@@ -627,13 +628,22 @@
         }
     };
 
-
     /**
      *
      * @returns {window.Router}
      */
     Controller.prototype.getRouter = function () {
         return router;
+    };
+
+    /**
+     *
+     * @returns {Controller}
+     */
+    Controller.prototype.restoreRouter = function () {
+        var me = this;
+        me.getRouter().restore();
+        return me;
     };
 
     /**
@@ -1247,13 +1257,16 @@
         this.initModels();
     };
 
+    /**
+     * initialize template
+     */
     View.prototype.initTemplate = function () {
         var me = this,
             config = me.get('config'),
             div = document.createElement('div'),
             _tpl;
         if (!config.tpl) {
-            throw new Error('no tpl set');
+            throw new Error(config.id + ': no tpl set');
         }
         if (!VTM.get(config.tpl)) {
             _tpl = document.getElementById(config.tpl);
@@ -1431,7 +1444,7 @@
     View.prototype.getChild = function (id) {
         var me = this,
             config = me.get('config');
-        if(config.views && !config.views[id] || !config.view)
+        if (!config.views || config.views && !config.views[id])
             return false;
         return config.views[id];
     };
@@ -1499,7 +1512,7 @@
             config.renderTo = selector;
         }
 
-        if(!config.parent){
+        if (!config.parent) {
             config.parent = parent;
         }
         else if (config.parent && config.parent.get('config').id !== parent.get('config').id) {
@@ -1534,6 +1547,49 @@
             }
         }
     };
+
+
+    /**
+     * show element
+     * @returns {View}
+     */
+    View.prototype.show = function () {
+        var me = this,
+            style;
+        if (!me.isInDOM())
+            return me;
+        style = me.get('el').style;
+        style.display = 'block';
+        me.set('visible', true);
+        me.fireEvent('show', me, style);
+        return me;
+    };
+
+    /**
+     * hide element
+     * @returns {View}
+     */
+    View.prototype.hide = function () {
+        var me = this,
+            style;
+        if (!me.isInDOM())
+            return me;
+        style = me.get('el').style;
+        style.display = 'none';
+        me.set('visible', false);
+        me.fireEvent('hide', me, style);
+        return me;
+    };
+
+    /**
+     * hide element
+     * @returns {View}
+     */
+    View.prototype.isVisible = function () {
+        var me = this;
+        return me.get('visible') && me.isInDOM();
+    };
+
 
     yamvc.ViewManager = VM;
     window.yamvc = yamvc;

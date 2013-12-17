@@ -7,7 +7,7 @@
 
   app.views = app.views || {};
 
-  app.viewsform = app.viewsform || {};
+  app.views.form = app.views.form || {};
 
   yamvc = window.yamvc;
 

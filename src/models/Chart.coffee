@@ -111,10 +111,6 @@ Chart::recalculate = ()->
   @$set 'data', chartsData
 
 
-Chart::all = (all...)->
-
-Chart::getChart = (all...)->
-
 
 #static
 app.models.chart = new Chart

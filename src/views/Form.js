@@ -126,15 +126,11 @@
   };
 
   Form.prototype.show = function() {
-    var style;
+    var all, style;
+    all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    yamvc.View.prototype.show.apply(this, all);
     style = this.get('el').style;
     return style.display = 'table';
-  };
-
-  Form.prototype.hide = function() {
-    var style;
-    style = this.get('el').style;
-    return style.display = 'none';
   };
 
   app.views.Form = Form;

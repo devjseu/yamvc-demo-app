@@ -102,13 +102,10 @@ Form::resize = ()->
   style.width = @getWidth() + 'px'
   style.height = @getHeight() + 'px'
 
-Form::show = ()->
+Form::show = (all...)->
+  yamvc.View::show.apply(this, all)
   style = @get('el').style
   style.display = 'table'
-
-Form::hide = ()->
-  style = @get('el').style
-  style.display = 'none'
 
 app.views.Form = Form
 

@@ -205,7 +205,6 @@ html, body {
       overflow: hidden;
 
       .container {
-        background-color: lightblue;
         min-height: 50px;
         border: 2px solid grey;
         border-left: 2px;
@@ -235,6 +234,8 @@ html, body {
 // Simple button component
 .btn-container {
   display: inline;
+  font-family: Courier;
+  font-size: 12px;
 
   a {
     text-decoration: none;
@@ -635,6 +636,26 @@ html, body {
 
     input.invalid {
       background: indianred;
+    }
+  }
+}
+
+//table
+.table-container {
+  width: 95%;
+  padding: 2.5%;
+  font-family: Courier;
+  font-size: 13px;
+
+  table {
+    width: 100%;
+
+    thead {
+      border-bottom: 1px solid black;
+    }
+
+    td {
+      padding: 5px;
     }
   }
 }

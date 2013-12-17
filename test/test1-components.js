@@ -51,18 +51,11 @@
     });
     ok(btn instanceof yamvc.View, "Button is instance of view");
     btn.render();
-    ok(btn.isInDOM(), "Button was added to the DOM");
-    return this;
+    return ok(btn.isInDOM(), "Button was added to the DOM");
   });
 
   test("Balance Bar component tests", function() {
-    var bar, data, expenses, resources, result;
-    data = {
-      legend: 'Legend',
-      expenses: 'expenses',
-      resources: 'resources',
-      currentBalance: 'Current balance'
-    };
+    var bar, expenses, resources;
     bar = new app.views.BarBalance({
       config: {
         id: 'current-balance',
@@ -84,7 +77,7 @@
         }
       }
     });
-    ok(bar instanceof app.views.BarBalance, "Bar is instance of app.views.BarBalance");
+    ok(bar instanceof yamvc.View, "Bar is instance of app.views.BarBalance");
     bar.render();
     ok(bar.isInDOM(), "Balance Bar was added to the DOM");
     ok(bar.getModel('balance').$get('resources') === 0, "After initialize resources shoudle be equal 0");
@@ -97,8 +90,8 @@
     });
     resources = bar.get('el').querySelector('.bar-balance-resources');
     expenses = bar.get('el').querySelector('.bar-balance-expenses');
-    result = Math.round(resources.offsetWidth / expenses.offsetWidth);
-    equal(result, 3, 'Expenses bar should be nearly three times smaller than avaiable resources');
+    equal(resources.innerHTML, '3000 zł', 'Expenses bar should contain -1000zł');
+    equal(expenses.innerHTML, '-1000 zł', 'Expenses bar should contain -1000zł');
     return this;
   });
 

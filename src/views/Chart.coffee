@@ -26,8 +26,6 @@ Chart::bindModelEvents = ()->
   @getModel('chart').addListener('dataDataChange', @redrawChart.bind(@))
 
 Chart::redrawChart = ->
-  console.log('redraw!')
-  console.log(@getModel('chart').$get('data'))
   @get('chart').draw(
     google.visualization.arrayToDataTable(@getModel('chart').$get('data')
     )

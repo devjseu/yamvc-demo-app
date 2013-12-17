@@ -62,7 +62,7 @@
         <div class="bar-balance-container-2">
             <ul class="bar-balance-container-3">
                 <li class="bar-balance-expenses">{{balance.expenses}} €</li>
-                <li class="bar-balance-resources">{{balance.available}} €</li>
+                <li class="bar-balance-resources">{{balance.resources}} €</li>
             </ul>
             <div class="bar-balance-legend">
                 <div>{{locale.legend}}</div>
@@ -107,15 +107,17 @@
                     <form>
                         <p>
                             <label for="form-name">{{locale.name}}</label>
-                            <input placeholder="{{locale.exName}}" id="form-name" name="name" />
+                            <input placeholder="{{locale.exName}}" id="form-name" name="name"/>
                         </p>
+
                         <p>
                             <label for="form-date">{{locale.date}}</label>
-                            <input placeholder="{{locale.exDate}}" id="form-date" name="date" />
+                            <input placeholder="{{locale.exDate}}" id="form-date" name="date"/>
                         </p>
+
                         <p>
                             <label for="form-value">{{locale.value}}</label>
-                            <input placeholder="{{locale.exValue}}" id="form-value" name="value" />
+                            <input placeholder="{{locale.exValue}}" id="form-value" name="value"/>
                         </p>
                     </form>
                     <div class="form-errors">{{form.errors}}</div>
@@ -128,27 +130,23 @@
 <!-- Template - LAYOUT-2 -->
 <script type="text/html" id="tpl-layout-2">
     <div class="layout">
-        <header class="balance-container">
-
-        </header>
-        <nav class="layout-action-bar">
-
+        <nav class="layout-2-action-bar">
         </nav>
-        <section>
-            <figure class="balance-chart">
-                <div class="container">
-
-                </div>
-            </figure>
-            <aside>
-                <nav class="menu">
-
-                </nav>
-            </aside>
+        <div class="container">
+        </div>
         </section>
         <footer>
 
         </footer>
+    </div>
+</script>
+<!-- Template - Table -->
+<script type="text/html" id="tpl-table">
+    <div class="table-container">
+        <table>
+            <thead></thead>
+            <tbody></tbody>
+        </table>
     </div>
 </script>
 <!-- Use latest version less copy of current release -->
@@ -181,11 +179,13 @@
 </script>
 <script src="src/data/Db.js"></script>
 <script src="src/views/Layout.js"></script>
+<script src="src/views/Layout2.js"></script>
 <script src="src/views/Button.js"></script>
 <script src="src/views/Bar.js"></script>
 <script src="src/views/Menu.js"></script>
 <script src="src/views/Chart.js"></script>
 <script src="src/views/Form.js"></script>
+<script src="src/views/Table.js"></script>
 <script src="src/views/Form/AddIncome.js"></script>
 <script src="src/views/Form/AddExpense.js"></script>
 <script src="src/views/Bar/Balance.js"></script>
@@ -194,6 +194,7 @@
 <script src="src/models/Chart.js"></script>
 <script src="src/models/Income.js"></script>
 <script src="src/models/Expense.js"></script>
+<script src="src/models/Table.js"></script>
 <script src="src/data/proxy/ydnDb.js"></script>
 <script src="src/main.js"></script>
 <script type="text/javascript" src="assets/js/lib/ydn-db/ydn.db-isw-core-qry.js"></script>

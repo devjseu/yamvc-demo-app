@@ -72,17 +72,11 @@ test(
       "Button was added to the DOM"
     )
 
-    this
 )
 
 test(
   "Balance Bar component tests"
   ->
-    data =
-      legend: 'Legend'
-      expenses: 'expenses'
-      resources: 'resources'
-      currentBalance: 'Current balance'
 
     bar = new app.views.BarBalance
       config:
@@ -102,7 +96,7 @@ test(
 
 
     ok(
-      bar instanceof app.views.BarBalance
+      bar instanceof yamvc.View
       "Bar is instance of app.views.BarBalance"
     )
 
@@ -137,8 +131,9 @@ test(
 
     resources = bar.get('el').querySelector('.bar-balance-resources')
     expenses = bar.get('el').querySelector('.bar-balance-expenses')
-    result = Math.round(resources.offsetWidth / expenses.offsetWidth)
-    equal(result, 3,
-      'Expenses bar should be nearly three times smaller than avaiable resources')
+    equal(resources.innerHTML, '3000 zł',
+      'Expenses bar should contain -1000zł')
+    equal(expenses.innerHTML, '-1000 zł',
+      'Expenses bar should contain -1000zł')
     @
 )

@@ -125,16 +125,6 @@
     return this.$set('data', chartsData);
   };
 
-  Chart.prototype.all = function() {
-    var all;
-    all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-  };
-
-  Chart.prototype.getChart = function() {
-    var all;
-    all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-  };
-
   app.models.chart = new Chart;
 
   window.app = app;

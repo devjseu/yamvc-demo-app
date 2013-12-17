@@ -9,52 +9,60 @@ app.init = ->
     config:
       name: 'culturalMe'
       schema:
-        stores: [{
-          name: 'incomes'
-          keyPath: 'id'
-          autoIncrement: true,
-          indexes: [
-            {
-              keyPath: 'date'
-            }
-          ]
-        },
-        {
-          name: 'expenses'
-          keyPath: 'id'
-          autoIncrement: true,
-          indexes: [
-            {
-              keyPath: 'date'
-            }
-          ]
-        }]
+        stores: [
+          {
+            name: 'incomes'
+            keyPath: 'id'
+            autoIncrement: true,
+            indexes: [
+              {
+                keyPath: 'date'
+              }
+            ]
+          },
+          {
+            name: 'expenses'
+            keyPath: 'id'
+            autoIncrement: true,
+            indexes: [
+              {
+                keyPath: 'date'
+              }
+            ]
+          }
+        ]
+
 
   #layout
-  app.layout = new app.views.Layout
+  app.views.layout = new app.views.Layout
     config:
-      autoCreate: true,
+      id: 'layout'
       tpl: 'tpl-layout',
+      renderTo: '#container'
+
+  #layout2
+  app.views.layout2 = new app.views.Layout2
+    config:
+      id: 'layout-2'
+      tpl: 'tpl-layout-2',
       renderTo: '#container'
 
   #window are rendered outside layout
   #window - add income
-  app.income = new app.views.form.AddIncome
+  app.views.income = new app.views.form.AddIncome
     config:
-      autoCreate: true
       id: 'add-income'
       tpl: 'tpl-window'
       renderTo: 'body'
-  app.income.render()
+  app.views.income.render()
 
   #window - add expense
-  app.expense = new app.views.form.AddExpense
+  app.views.expense = new app.views.form.AddExpense
     config:
-      autoCreate: true
       id: 'add-expense'
       tpl: 'tpl-window'
       renderTo: 'body'
-  app.expense.render()
+  app.views.expense.render()
 
   #define controllers
   app.controlles =
@@ -63,13 +71,39 @@ app.init = ->
       config:
         name: 'Main'
         views:
-          layout: app.layout
+          "layout": app.views.layout
+          "layout-2": app.views.layout2
+        #set routes
+        routes:
+          "": 'home'
+          "show-expenses": 'showExpenses'
+          "show-incomes": 'showIncomes'
       #delegate events
         events:
         #for views
-          $layout:
+          "$layout":
             render: ()->
               app.models.balance.load()
+              setTimeout(
+                ->
+                  app.mask.hide()
+                500
+              )
+            show : ()->
+              setTimeout(
+                ->
+                  app.mask.hide()
+                500
+              )
+          "$layout-2":
+            render: ()->
+              console.log('test')
+              setTimeout(
+                ->
+                  app.mask.hide()
+                500
+              )
+            show : ()->
               setTimeout(
                 ->
                   app.mask.hide()
@@ -79,27 +113,57 @@ app.init = ->
           '.add-expense a':
             click: (view, e)->
               e.preventDefault()
-              this.onExpenseBtnClick()
+              @onExpenseBtnClick()
           '.add-income a':
             click: (view, e)->
               e.preventDefault()
-              this.onIncomeBtnClick()
+              @onIncomeBtnClick()
+          '.layout-2-action-bar .button':
+            click: (view, e)->
+              e.preventDefault()
+              @onBackBtnClick()
           '[yamvc-id="list-incomes"] a':
             click: (view, e)->
               e.preventDefault()
-              this.onListIncomesBtnClick()
+              @onListIncomesBtnClick()
           '[yamvc-id="list-expenses"] a':
             click: (view, e)->
               e.preventDefault()
-              this.onListExpensesBtnClick()
+              @onListExpensesBtnClick()
+      onBackBtnClick: ()->
+        @redirectTo('')
       onExpenseBtnClick: ()->
         yamvc.ViewManager.get('add-expense').show()
       onIncomeBtnClick: ()->
         yamvc.ViewManager.get('add-income').show()
       onListIncomesBtnClick: ()->
-        console.log('list incomes click')
+        app.mask.show()
+        @redirectTo('show-incomes')
       onListExpensesBtnClick: ()->
-        console.log('list expenses click')
+        app.mask.show()
+        @redirectTo('show-expenses')
+      home: ()->
+        app.views.layout2.hide()
+        if app.views.layout.isInDOM()
+          app.views.layout.show()
+        else
+          app.views.layout.render()
+      showExpenses: ()->
+        app.views.layout.hide()
+        if app.views.layout2.isInDOM()
+          app.views.layout2.show()
+        else
+          app.views.layout2.render()
+        app.views.layout2.getChild('incomes').hide()
+        app.views.layout2.getChild('expenses').show()
+      showIncomes: ()->
+        app.views.layout.hide()
+        if app.views.layout2.isInDOM()
+          app.views.layout2.show()
+        else
+          app.views.layout2.render()
+        app.views.layout2.getChild('incomes').show()
+        app.views.layout2.getChild('expenses').hide()
 
   @
 
