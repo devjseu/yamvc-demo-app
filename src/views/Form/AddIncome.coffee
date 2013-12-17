@@ -1,19 +1,15 @@
-#get namespace
 app = window.app || {}
 app.views = app.views || {}
-app.views.window = app.views.window || {}
+app.views.form = app.views.form || {}
 yamvc = window.yamvc
 
-#extend class Window
-AddExpense = app.views.Window.extend(
+AddIncome = app.views.Form.extend(
   (all...)->
-    #call parent constructor
-    app.views.Window.apply(@, all)
+    app.views.Form.apply(@, all)
     @
 )
 
-#modify default values
-AddExpense::initConfig = (all...)->
+AddIncome::initConfig = (all...)->
   config = @get 'config'
   config.models =
     locale: new yamvc.Model
@@ -23,27 +19,28 @@ AddExpense::initConfig = (all...)->
         name: 'Name'
         date: 'Date'
         value: 'Value'
-        exName: 'e.g Book'
-        exDate: 'e.g 23/9/2013'
-        exValue: 'e.g 25.50'
-    expense: new app.models.Expense
+        exName: 'e.g Salary'
+        exDate: 'e.g 23/3/2013'
+        exValue: 'e.g 2005.55'
+    income: new app.models.Income
       config:
-        namespace: 'expenses'
+        namespace: 'incomes'
         proxy: new app.data.proxy.YdnDb
           config:
             db: app.data.db
-  app.views.Window::initConfig.apply(@, all)
+
+  app.views.Form::initConfig.apply(@, all)
   @bindModelEvents()
 
-#bind additional events
-AddExpense::bindEvents = (all...)->
-  app.views.Window::bindEvents.apply(@, all)
+AddIncome::bindEvents = (all...)->
+  app.views.Form::bindEvents.apply(@, all)
   @addListener('render', @addClass.bind(@))
 
-AddExpense::bindModelEvents = ()->
-  @getModel('expense').addListener('saved', @afterModelSave.bind(@))
+AddIncome::bindModelEvents = ()->
+  @getModel('income').addListener('saved', @afterModelSave.bind(@))
 
-AddExpense::processForm = ()->
+AddIncome::processForm = (e)->
+  e.preventDefault();
   test = []
   inputs = @queryEls('form input')
   @validateName()
@@ -58,25 +55,23 @@ AddExpense::processForm = ()->
     i++
   if test.length == 0
     results['date'] = +new Date(app.logic.Date.parse(results['date']))
-    @getModel('expense').setData(results)
+    @getModel('income').setData(results)
     app.mask.show()
-    @getModel('expense').save()
+    @getModel('income').save()
   @
 
-AddExpense::afterModelSave = ()->
+AddIncome::afterModelSave = ()->
   @queryEl('form').reset()
   app.mask.hide()
   app.models.balance.load()
   app.models.chart.load()
   @hide()
 
-#add custom class
-AddExpense::addClass = ()->
+AddIncome::addClass = ()->
   form = @queryEl 'form'
-  form.setAttribute 'class', 'add-expenses'
-  form.setAttribute 'data-type', 'add-expenses'
+  form.setAttribute 'class', 'add-income'
+  form.setAttribute 'data-type', 'add-income'
 
-#export
-app.views.window.AddExpense = AddExpense
+app.views.form.AddIncome = AddIncome
 
 window.app = app

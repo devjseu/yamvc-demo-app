@@ -39,7 +39,7 @@ app.init = ->
 
   #window are rendered outside layout
   #window - add income
-  app.income = new app.views.window.AddIncome
+  app.income = new app.views.form.AddIncome
     config:
       autoCreate: true
       id: 'add-income'
@@ -48,7 +48,7 @@ app.init = ->
   app.income.render()
 
   #window - add expense
-  app.expense = new app.views.window.AddExpense
+  app.expense = new app.views.form.AddExpense
     config:
       autoCreate: true
       id: 'add-expense'

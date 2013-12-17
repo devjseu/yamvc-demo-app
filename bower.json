@@ -1,5 +1,5 @@
 {
-    "name": "culturalMe",
+    "name": "cultural-me",
     "version": "1.0.0",
     "dependencies": {
         "jquery": ">= 1.9.0",

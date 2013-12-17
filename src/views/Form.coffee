@@ -4,7 +4,7 @@ app.views = app.views || {}
 yamvc = window.yamvc
 
 #extend basic view
-Window = yamvc.View.extend(
+Form = yamvc.View.extend(
   (all...)->
     yamvc.View.apply(@, all)
     @bindEvents();
@@ -12,13 +12,13 @@ Window = yamvc.View.extend(
 )
 
 #bind events
-Window::bindEvents = ()->
+Form::bindEvents = ()->
   @addListener('render', @resize.bind(@))
   @addListener('render', @bindClose.bind(@))
   @addListener('render', @bindDOMEvents.bind(@))
 
 
-Window::initConfig = (all...)->
+Form::initConfig = (all...)->
   config = @get 'config'
   config.width = config.width || 400
   config.height = config.height || 300
@@ -50,7 +50,7 @@ Window::initConfig = (all...)->
   yamvc.View::initConfig.apply(@, all)
 
 #close button
-Window::bindClose = ()->
+Form::bindClose = ()->
   me = @
   @queryEl('a').addEventListener(
     'click',
@@ -62,17 +62,17 @@ Window::bindClose = ()->
   )
 
 #bind all interactions with DOM
-Window::bindDOMEvents = ()->
+Form::bindDOMEvents = ()->
   @queryEl('#form-name').addEventListener('keyup',@validateName.bind(@))
   @queryEl('#form-date').addEventListener('keyup',@validateDate.bind(@))
   @queryEl('#form-value').addEventListener('keyup',@validateValue.bind(@))
   @queryEl('.bottom-bar a').addEventListener('click',@processForm.bind(@), false)
 
 #abstract
-Window::processForm = () ->
+Form::processForm = () ->
 
 #validate field name
-Window::validateName = ()->
+Form::validateName = ()->
   value = @queryEl('#form-name').value
   if value && value.length > 3
     @queryEl('#form-name').setAttribute 'class', ''
@@ -80,7 +80,7 @@ Window::validateName = ()->
     @queryEl('#form-name').setAttribute 'class', 'invalid'
 
 #validate field date
-Window::validateDate = ()->
+Form::validateDate = ()->
   value = @queryEl('#form-date').value
   if app.logic.Date.parse(value)
     @queryEl('#form-date').setAttribute 'class', ''
@@ -88,7 +88,7 @@ Window::validateDate = ()->
     @queryEl('#form-date').setAttribute 'class','invalid'
 
 #validate field value
-Window::validateValue = ()->
+Form::validateValue = ()->
   value = @queryEl('#form-value').value
   test = /^\s*(\+|-)?((\d+(\.\d+)?)|(\.\d+))\s*$/
   if test.test(value)
@@ -97,19 +97,19 @@ Window::validateValue = ()->
     @queryEl('#form-value').setAttribute 'class','invalid'
 
 #resize window to custom values
-Window::resize = ()->
+Form::resize = ()->
   style = @queryEl('.window-vertical-center').style
   style.width = @getWidth() + 'px'
   style.height = @getHeight() + 'px'
 
-Window::show = ()->
+Form::show = ()->
   style = @get('el').style
   style.display = 'table'
 
-Window::hide = ()->
+Form::hide = ()->
   style = @get('el').style
   style.display = 'none'
 
-app.views.Window = Window
+app.views.Form = Form
 
 window.app = app

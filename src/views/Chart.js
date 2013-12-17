@@ -44,6 +44,7 @@
 
   Chart.prototype.redrawChart = function() {
     console.log('redraw!');
+    console.log(this.getModel('chart').$get('data'));
     return this.get('chart').draw(google.visualization.arrayToDataTable(this.getModel('chart').$get('data')), {
       title: this.getModel('chart').$get('title'),
       width: this.queryEl('.chart-container').offsetWidth,
