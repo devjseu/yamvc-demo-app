@@ -31,5 +31,13 @@ grunt
 ```
 
 ##Run
+You are able to run project from disk but it's better to set up a simple server instance. To do that with node, first, install  `simple-http-server`.
+```javascript
+npm -g install simple-http-server
+```
+And then from project location run command:
+```javascript
+nserver
+```
 There are two ways to open project in browser. First, using `index.html` and this is production environment and
 second using `index-dev.html` where all source files are loaded separately.
