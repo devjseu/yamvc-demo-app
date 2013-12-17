@@ -53,7 +53,7 @@ AddIncome::processForm = ()->
     results[inputs[i].name] = inputs[i].value
     i++
   if test.length == 0
-    results['date'] = +new Date(@parseDate(results['date']))
+    results['date'] = +new Date(app.logic.Date.parse(results['date']))
     @getModel('income').setData(results)
     app.mask.show()
     @getModel('income').save()
@@ -63,6 +63,7 @@ AddIncome::afterModelSave = ()->
   @queryEl('form').reset()
   app.mask.hide()
   app.models.balance.load()
+  app.models.chart.load()
   @hide()
 
 AddIncome::addClass = ()->

@@ -19,7 +19,10 @@ Balance::initConfig = (all...)->
     resources: 0
     expenses: 0
     available: 0
-    month: 1
+
+  currentDate = new Date()
+  @set 'from', 1 + '/' + (currentDate.getMonth() + 1) + '/' + currentDate.getFullYear()
+  @set 'to', currentDate.getDate() + '/' + (currentDate.getMonth() + 1) + '/' + currentDate.getFullYear()
   #define model namespace
   config.namespace = 'balance'
   @set 'initOpts', initOpts
@@ -29,44 +32,57 @@ Balance::setRange = (from, to)->
   @set 'from', from
   @set 'to', to
 
-Balance::load = (all...)->
+Balance::load = ()->
+  @set 'toLoad', 2
+  @loadResources()
+  @loadExpenses()
+  @
+Balance::loadResources = ()->
   me = @
-  balance = 0
-  date = new Date();
-  date2 = new Date();
-  date.setFullYear(2013,11,1);
-  date2.setFullYear(2014,1,1);
+  resources = 0
+  from = new Date(app.logic.Date.parse(@get 'from'))
+  to = new Date(app.logic.Date.parse(@get 'to'))
   db = app.data.db.getConnection()
   q = db.from('incomes')
-  q.where('date', '>=', date.getTime(), '<', date2.getTime())
+  q.where('date', '>=', from.getTime(), '<', to.getTime() + 24*60*60*1000)
   .list()
   .done(
-      (incomes)->
+      (records)->
         i = 0
-        l = incomes.length
+        l = records.length
         while (i < l)
-          balance += parseFloat(incomes[i].value)
+          resources += parseFloat(records[i].value)
           i++
-        func()
+        me.$set 'resources', resources
+        me.set 'toLoad', me.get('toLoad') - 1
+        if me.get('toLoad') is 0
+          me.recalculate.call(me)
     )
 
-  func = ()->
-    q2 = db.from('expenses')
-    q2.where('date', '>=', date.getTime(), '<', date2.getTime())
-    .list()
-    .done(
-        (incomes)->
-          i = 0
-          l = incomes.length
-          while (i < l)
-            balance -= parseFloat(incomes[i].value)
-            i++
-          me.$set('resources', balance)
-      )
+Balance::loadExpenses = ()->
+  me = @
+  expenses = 0
+  from = new Date(app.logic.Date.parse(@get 'from'))
+  to = new Date(app.logic.Date.parse(@get 'to'))
+  db = app.data.db.getConnection()
+  q2 = db.from('expenses')
+  q2.where('date', '>=', from.getTime(), '<', to.getTime() + 24*60*60*1000)
+  .list()
+  .done(
+      (records)->
+        i = 0
+        l = records.length
+        while (i < l)
+          expenses -= parseFloat(records[i].value)
+          i++
+        me.$set 'expenses', expenses
+        me.set 'toLoad', me.get('toLoad') - 1
+        if me.get('toLoad') is 0
+          me.recalculate.call(me)
+    )
 
-  @
-
-Balance::recaulculate = (all...)->
+Balance::recalculate = ()->
+  @$set 'available', (@$get('resources') + @$get('expenses'))
 
 Balance::all = (all...)->
 

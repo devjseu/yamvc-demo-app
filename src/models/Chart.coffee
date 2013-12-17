@@ -16,40 +16,12 @@ Chart::initConfig = (all...)->
   initOpts = @get 'initOpts'
   #define default data
   initOpts.data =
-    type : 'AreaChart'
-    title : 'Day by day'
-    isStacked : true
-    data : [
-      ['Day',   'Balance']
-      ['1',    165]
-      ['2',    135]
-      ['3',    157]
-      ['4',    139]
-      ['5',    136]
-      ['7',    136]
-      ['8',    136]
-      ['9',    136]
-      ['10',    136]
-      ['11',    136]
-      ['12',    136]
-      ['13',    136]
-      ['14',    136]
-      ['15',    136]
-      ['16',    165]
-      ['17',    135]
-      ['18',    457]
-      ['19',    139]
-      ['20',    336]
-      ['21',    136]
-      ['22',    136]
-      ['23',    136]
-      ['24',    136]
-      ['25',    136]
-      ['26',    136]
-      ['27',    136]
-      ['28',    1936]
-      ['29',    2136]
-      ['30',    2136]
+    type: 'AreaChart'
+    title: 'Long term balance'
+    isStacked: true
+    data: [
+      ['Day', 'Balance']
+      ['1', 0]
     ]
   #define model namespace
   config.namespace = 'balance'
@@ -57,10 +29,87 @@ Chart::initConfig = (all...)->
   yamvc.Model::initConfig.apply(@, all)
 
 Chart::setRange = (from, to)->
+  @set 'from', from
+  @set 'to', to
 
-Chart::load = (all...)->
+Chart::load = ()->
+  @set 'toLoad', 2
+  @loadResources()
+  @loadExpenses()
+  @
 
-Chart::recaulculate = (all...)->
+Chart::loadResources = ()->
+  me = @
+  incomes = []
+  db = app.data.db.getConnection()
+  q2 = db.from('incomes')
+  q2.list()
+  .done(
+      (records)->
+        i = 0
+        l = records.length
+        while (i < l)
+          incomes.push
+            date: records[i].date
+            value: parseFloat(records[i].value)
+          i++
+        me.set 'incomes', incomes
+        me.set 'toLoad', me.get('toLoad') - 1
+        if me.get('toLoad') is 0
+          me.recalculate.call(me)
+    )
+
+Chart::loadExpenses = ()->
+  me = @
+  expenses = []
+  db = app.data.db.getConnection()
+  q2 = db.from('expenses')
+  q2.list()
+  .done(
+      (records)->
+        i = 0
+        l = records.length
+        while (i < l)
+          expenses.push
+            date: records[i].date
+            value: -parseFloat(records[i].value)
+          i++
+
+        me.set 'expenses', expenses
+        me.set 'toLoad', me.get('toLoad') - 1
+        if me.get('toLoad') is 0
+          me.recalculate.call(me)
+    )
+
+Chart::recalculate = ()->
+  now = new Date()
+  time = now.getTime()
+  chartsData = [
+    ['Day', 'Balance']
+  ]
+  balance = 0
+  operation = @get 'incomes'
+  operation = (operation.concat @get 'expenses')
+  operation.sort(
+    (a, b)->
+      return a.date - b.date
+  )
+  i = 0
+  l = operation.length
+  while i < l
+    balance += operation[i].value
+    date = new Date(operation[i].date)
+    dateTime = date.getTime()
+    if (dateTime + 31 * 24 * 60 * 60 * 1000) > time
+      chartsData.push(
+        [
+           date.getDate() + '/' +(date.getMonth() + 1),
+          balance
+        ]
+      )
+    i++
+  @$set 'data', chartsData
+
 
 Chart::all = (all...)->
 
@@ -68,6 +117,6 @@ Chart::getChart = (all...)->
 
 
 #static
-app.models.Chart = Chart
+app.models.chart = new Chart
 
 window.app = app

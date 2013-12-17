@@ -82,7 +82,7 @@ Window::validateName = ()->
 #validate field date
 Window::validateDate = ()->
   value = @queryEl('#form-date').value
-  if @parseDate(value)
+  if app.logic.Date.parse(value)
     @queryEl('#form-date').setAttribute 'class', ''
   else
     @queryEl('#form-date').setAttribute 'class','invalid'
@@ -101,16 +101,6 @@ Window::resize = ()->
   style = @queryEl('.window-vertical-center').style
   style.width = @getWidth() + 'px'
   style.height = @getHeight() + 'px'
-
-#should be in logic not in view!
-Window::parseDate = (str)->
-  pad = (x)->
-    (((''+x).length==2) ? '' : '0') + x
-  m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)
-  d = if (m) then new Date(m[3], m[2]-1, m[1]) else null
-  matchesPadded = (d&&(str==[pad(d.getDate()),pad(d.getMonth()+1),d.getFullYear()].join('/')))
-  matchesNonPadded = (d&&(str==[d.getDate(),d.getMonth()+1,d.getFullYear()].join('/')))
-  if (matchesPadded || matchesNonPadded) then d else null
 
 Window::show = ()->
   style = @get('el').style

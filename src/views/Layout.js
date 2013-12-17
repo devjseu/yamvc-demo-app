@@ -34,8 +34,8 @@
               },
               data: {
                 legend: 'Legend',
-                expenses: 'expenses',
-                resources: 'resources',
+                expenses: 'monthly expenses',
+                resources: 'monthly resources',
                 currentBalance: 'Current balance'
               }
             }),

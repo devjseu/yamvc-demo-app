@@ -23,16 +23,18 @@
   };
 
   Balance.prototype.initConfig = function() {
-    var all, config, initOpts;
+    var all, config, currentDate, initOpts;
     all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     config = this.get('config');
     initOpts = this.get('initOpts');
     initOpts.data = {
       resources: 0,
       expenses: 0,
-      available: 0,
-      month: 1
+      available: 0
     };
+    currentDate = new Date();
+    this.set('from', 1 + '/' + (currentDate.getMonth() + 1) + '/' + currentDate.getFullYear());
+    this.set('to', currentDate.getDate() + '/' + (currentDate.getMonth() + 1) + '/' + currentDate.getFullYear());
     config.namespace = 'balance';
     this.set('initOpts', initOpts);
     return yamvc.Model.prototype.initConfig.apply(this, all);
@@ -44,46 +46,62 @@
   };
 
   Balance.prototype.load = function() {
-    var all, balance, date, date2, db, func, me, q;
-    all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    me = this;
-    balance = 0;
-    date = new Date();
-    date2 = new Date();
-    date.setFullYear(2013, 11, 1);
-    date2.setFullYear(2014, 1, 1);
-    db = app.data.db.getConnection();
-    q = db.from('incomes');
-    q.where('date', '>=', date.getTime(), '<', date2.getTime()).list().done(function(incomes) {
-      var i, l;
-      i = 0;
-      l = incomes.length;
-      while (i < l) {
-        balance += parseFloat(incomes[i].value);
-        i++;
-      }
-      return func();
-    });
-    func = function() {
-      var q2;
-      q2 = db.from('expenses');
-      return q2.where('date', '>=', date.getTime(), '<', date2.getTime()).list().done(function(incomes) {
-        var i, l;
-        i = 0;
-        l = incomes.length;
-        while (i < l) {
-          balance -= parseFloat(incomes[i].value);
-          i++;
-        }
-        return me.$set('resources', balance);
-      });
-    };
+    this.set('toLoad', 2);
+    this.loadResources();
+    this.loadExpenses();
     return this;
   };
 
-  Balance.prototype.recaulculate = function() {
-    var all;
-    all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  Balance.prototype.loadResources = function() {
+    var db, from, me, q, resources, to;
+    me = this;
+    resources = 0;
+    from = new Date(app.logic.Date.parse(this.get('from')));
+    to = new Date(app.logic.Date.parse(this.get('to')));
+    db = app.data.db.getConnection();
+    q = db.from('incomes');
+    return q.where('date', '>=', from.getTime(), '<', to.getTime() + 24 * 60 * 60 * 1000).list().done(function(records) {
+      var i, l;
+      i = 0;
+      l = records.length;
+      while (i < l) {
+        resources += parseFloat(records[i].value);
+        i++;
+      }
+      me.$set('resources', resources);
+      me.set('toLoad', me.get('toLoad') - 1);
+      if (me.get('toLoad') === 0) {
+        return me.recalculate.call(me);
+      }
+    });
+  };
+
+  Balance.prototype.loadExpenses = function() {
+    var db, expenses, from, me, q2, to;
+    me = this;
+    expenses = 0;
+    from = new Date(app.logic.Date.parse(this.get('from')));
+    to = new Date(app.logic.Date.parse(this.get('to')));
+    db = app.data.db.getConnection();
+    q2 = db.from('expenses');
+    return q2.where('date', '>=', from.getTime(), '<', to.getTime() + 24 * 60 * 60 * 1000).list().done(function(records) {
+      var i, l;
+      i = 0;
+      l = records.length;
+      while (i < l) {
+        expenses -= parseFloat(records[i].value);
+        i++;
+      }
+      me.$set('expenses', expenses);
+      me.set('toLoad', me.get('toLoad') - 1);
+      if (me.get('toLoad') === 0) {
+        return me.recalculate.call(me);
+      }
+    });
+  };
+
+  Balance.prototype.recalculate = function() {
+    return this.$set('available', this.$get('resources') + this.$get('expenses'));
   };
 
   Balance.prototype.all = function() {

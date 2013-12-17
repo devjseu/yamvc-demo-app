@@ -304,10 +304,10 @@ body {
   overflow: hidden;
 }
 .bar-balance-container .bar-balance-container-2 .bar-balance-legend p.bar-balance-legend-resources {
+  left: 32%;
   background-color: #6fa62a;
 }
 .bar-balance-container .bar-balance-container-2 .bar-balance-legend p.bar-balance-legend-expenses {
-  left: 28%;
   background-color: darkred;
   color: white;
 }

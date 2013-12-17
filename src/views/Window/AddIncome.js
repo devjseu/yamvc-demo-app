@@ -80,7 +80,7 @@
       i++;
     }
     if (test.length === 0) {
-      results['date'] = +new Date(this.parseDate(results['date']));
+      results['date'] = +new Date(app.logic.Date.parse(results['date']));
       this.getModel('income').setData(results);
       app.mask.show();
       this.getModel('income').save();
@@ -92,6 +92,7 @@
     this.queryEl('form').reset();
     app.mask.hide();
     app.models.balance.load();
+    app.models.chart.load();
     return this.hide();
   };
 

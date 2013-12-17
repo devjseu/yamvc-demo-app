@@ -57,12 +57,12 @@
 <!-- Template - BALANCE BAR -->
 <script type="text/html" id="tpl-bar-balance">
     <div class="bar-balance-container">
-        <p class="bar-balance-current">{{locale.currentBalance}}: {{balance.resources}} €</p>
+        <p class="bar-balance-current">{{locale.currentBalance}}: {{balance.available}} €</p>
 
         <div class="bar-balance-container-2">
             <ul class="bar-balance-container-3">
-                <li class="bar-balance-expenses">-{{balance.expenses}} €</li>
-                <li class="bar-balance-resources">{{balance.available}} €</li>
+                <li class="bar-balance-expenses">{{balance.expenses}} €</li>
+                <li class="bar-balance-resources">{{balance.resources}} €</li>
             </ul>
             <div class="bar-balance-legend">
                 <div>{{locale.legend}}</div>
@@ -88,7 +88,7 @@
 <!-- Template - BUTTON -->
 <script type="text/html" id="tpl-button">
     <div class="btn-container">
-        <a href="#" class="button">{{locale.text}}</a>
+        <a href="" class="button">{{locale.text}}</a>
     </div>
 </script>
 <!-- Template - CHART -->

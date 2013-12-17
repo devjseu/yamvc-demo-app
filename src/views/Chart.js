@@ -28,13 +28,33 @@
     all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     config = this.get('config');
     config.models = {
-      chart: new app.models.Chart
+      chart: app.models.chart
     };
-    return yamvc.View.prototype.initConfig.apply(this, all);
+    yamvc.View.prototype.initConfig.apply(this, all);
+    return this.bindModelEvents();
   };
 
   Chart.prototype.bindEvents = function() {
     return this.addListener('render', this.initChart.bind(this));
+  };
+
+  Chart.prototype.bindModelEvents = function() {
+    return this.getModel('chart').addListener('dataDataChange', this.redrawChart.bind(this));
+  };
+
+  Chart.prototype.redrawChart = function() {
+    console.log('redraw!');
+    return this.get('chart').draw(google.visualization.arrayToDataTable(this.getModel('chart').$get('data')), {
+      title: this.getModel('chart').$get('title'),
+      width: this.queryEl('.chart-container').offsetWidth,
+      height: this.queryEl('.chart-container').offsetHeight,
+      vAxis: {
+        title: this.getModel('chart').$get('titlevAxis')
+      },
+      hAxis: {
+        title: this.getModel('chart').$get('titlehAxis')
+      }
+    });
   };
 
   Chart.prototype.initChart = function() {
@@ -51,7 +71,8 @@
         title: this.getModel('chart').$get('titlehAxis')
       }
     });
-    return this.set('chart', chart);
+    this.set('chart', chart);
+    return this.getModel('chart').load();
   };
 
   app.views.Chart = Chart;

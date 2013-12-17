@@ -1,3 +1,4 @@
+#declare namespace
 app = window.app || {}
 app.data = app.data || {}
 app.data.proxy = app.data.proxy || {}

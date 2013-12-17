@@ -57,7 +57,7 @@ AddExpense::processForm = ()->
     results[inputs[i].name] = inputs[i].value
     i++
   if test.length == 0
-    results['date'] = +new Date(@parseDate(results['date']))
+    results['date'] = +new Date(app.logic.Date.parse(results['date']))
     @getModel('expense').setData(results)
     app.mask.show()
     @getModel('expense').save()
@@ -67,6 +67,7 @@ AddExpense::afterModelSave = ()->
   @queryEl('form').reset()
   app.mask.hide()
   app.models.balance.load()
+  app.models.chart.load()
   @hide()
 
 #add custom class

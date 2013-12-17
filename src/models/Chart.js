@@ -29,25 +29,100 @@
     initOpts = this.get('initOpts');
     initOpts.data = {
       type: 'AreaChart',
-      title: 'Day by day',
+      title: 'Long term balance',
       isStacked: true,
-      data: [['Day', 'Balance'], ['1', 165], ['2', 135], ['3', 157], ['4', 139], ['5', 136], ['7', 136], ['8', 136], ['9', 136], ['10', 136], ['11', 136], ['12', 136], ['13', 136], ['14', 136], ['15', 136], ['16', 165], ['17', 135], ['18', 457], ['19', 139], ['20', 336], ['21', 136], ['22', 136], ['23', 136], ['24', 136], ['25', 136], ['26', 136], ['27', 136], ['28', 1936], ['29', 2136], ['30', 2136]]
+      data: [['Day', 'Balance'], ['1', 0]]
     };
     config.namespace = 'balance';
     this.set('initOpts', initOpts);
     return yamvc.Model.prototype.initConfig.apply(this, all);
   };
 
-  Chart.prototype.setRange = function(from, to) {};
-
-  Chart.prototype.load = function() {
-    var all;
-    all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  Chart.prototype.setRange = function(from, to) {
+    this.set('from', from);
+    return this.set('to', to);
   };
 
-  Chart.prototype.recaulculate = function() {
-    var all;
-    all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+  Chart.prototype.load = function() {
+    this.set('toLoad', 2);
+    this.loadResources();
+    this.loadExpenses();
+    return this;
+  };
+
+  Chart.prototype.loadResources = function() {
+    var db, incomes, me, q2;
+    me = this;
+    incomes = [];
+    db = app.data.db.getConnection();
+    q2 = db.from('incomes');
+    return q2.list().done(function(records) {
+      var i, l;
+      i = 0;
+      l = records.length;
+      while (i < l) {
+        incomes.push({
+          date: records[i].date,
+          value: parseFloat(records[i].value)
+        });
+        i++;
+      }
+      me.set('incomes', incomes);
+      me.set('toLoad', me.get('toLoad') - 1);
+      if (me.get('toLoad') === 0) {
+        return me.recalculate.call(me);
+      }
+    });
+  };
+
+  Chart.prototype.loadExpenses = function() {
+    var db, expenses, me, q2;
+    me = this;
+    expenses = [];
+    db = app.data.db.getConnection();
+    q2 = db.from('expenses');
+    return q2.list().done(function(records) {
+      var i, l;
+      i = 0;
+      l = records.length;
+      while (i < l) {
+        expenses.push({
+          date: records[i].date,
+          value: -parseFloat(records[i].value)
+        });
+        i++;
+      }
+      me.set('expenses', expenses);
+      me.set('toLoad', me.get('toLoad') - 1);
+      if (me.get('toLoad') === 0) {
+        return me.recalculate.call(me);
+      }
+    });
+  };
+
+  Chart.prototype.recalculate = function() {
+    var balance, chartsData, date, dateTime, i, l, now, operation, time;
+    now = new Date();
+    time = now.getTime();
+    chartsData = [['Day', 'Balance']];
+    balance = 0;
+    operation = this.get('incomes');
+    operation = operation.concat(this.get('expenses'));
+    operation.sort(function(a, b) {
+      return a.date - b.date;
+    });
+    i = 0;
+    l = operation.length;
+    while (i < l) {
+      balance += operation[i].value;
+      date = new Date(operation[i].date);
+      dateTime = date.getTime();
+      if ((dateTime + 31 * 24 * 60 * 60 * 1000) > time) {
+        chartsData.push([date.getDate() + '/' + (date.getMonth() + 1), balance]);
+      }
+      i++;
+    }
+    return this.$set('data', chartsData);
   };
 
   Chart.prototype.all = function() {
@@ -60,7 +135,7 @@
     all = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
   };
 
-  app.models.Chart = Chart;
+  app.models.chart = new Chart;
 
   window.app = app;
 

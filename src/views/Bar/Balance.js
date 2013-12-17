@@ -29,6 +29,7 @@
     this.addListener('render', this.ajustBarsWidth.bind(this));
     this.getModel('balance').addListener('dataExpensesChange', this.updateBalance.bind(this));
     this.getModel('balance').addListener('dataResourcesChange', this.updateBalance.bind(this));
+    this.getModel('balance').addListener('dataAvailableChange', this.updateBalance.bind(this));
     this.getModel('balance').addListener('dataChange', this.updateBalance.bind(this));
     return this;
   };
@@ -50,7 +51,7 @@
 
   Balance.prototype.ajustBarsWidth = function() {
     var expenses, expensesLeft, expensesWidth, resources, resourcesLeft, resourcesWidth;
-    expenses = this.getModel('balance').$get('expenses');
+    expenses = Math.abs(this.getModel('balance').$get('expenses'));
     resources = this.getModel('balance').$get('resources');
     if (expenses === 0 && resources === 0) {
       expensesWidth = 0;

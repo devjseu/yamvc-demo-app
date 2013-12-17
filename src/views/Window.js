@@ -100,7 +100,7 @@
   Window.prototype.validateDate = function() {
     var value;
     value = this.queryEl('#form-date').value;
-    if (this.parseDate(value)) {
+    if (app.logic.Date.parse(value)) {
       return this.queryEl('#form-date').setAttribute('class', '');
     } else {
       return this.queryEl('#form-date').setAttribute('class', 'invalid');
@@ -123,25 +123,6 @@
     style = this.queryEl('.window-vertical-center').style;
     style.width = this.getWidth() + 'px';
     return style.height = this.getHeight() + 'px';
-  };
-
-  Window.prototype.parseDate = function(str) {
-    var d, m, matchesNonPadded, matchesPadded, pad;
-    pad = function(x) {
-      var _ref;
-      return ((_ref = ('' + x).length === 2) != null ? _ref : {
-        '': '0'
-      }) + x;
-    };
-    m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-    d = m ? new Date(m[3], m[2] - 1, m[1]) : null;
-    matchesPadded = d && (str === [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/'));
-    matchesNonPadded = d && (str === [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('/'));
-    if (matchesPadded || matchesNonPadded) {
-      return d;
-    } else {
-      return null;
-    }
   };
 
   Window.prototype.show = function() {
