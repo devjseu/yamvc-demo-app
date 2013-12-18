@@ -97,7 +97,6 @@ app.init = ->
               )
           "$layout-2":
             render: ()->
-              console.log('test')
               setTimeout(
                 ->
                   app.mask.hide()

@@ -82,6 +82,7 @@
     }
     if (test.length === 0) {
       results['date'] = +new Date(app.logic.Date.parse(results['date']));
+      this.getModel('expense').clear();
       this.getModel('expense').setData(results);
       app.mask.show();
       this.getModel('expense').save();

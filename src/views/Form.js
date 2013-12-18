@@ -119,7 +119,7 @@
 
   Form.prototype.resize = function() {
     var style;
-    style = this.queryEl('.window-vertical-center').style;
+    style = this.queryEl('.window').style;
     return style.width = this.getWidth() + 'px';
   };
 

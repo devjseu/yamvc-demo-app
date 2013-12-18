@@ -1,4 +1,4 @@
-/*! YAMVC v0.1.4 - 2013-12-17 
+/*! YAMVC v0.1.4 - 2013-12-18 
  *  License:  */
 (function (window, undefined) {
     "use strict";
@@ -861,6 +861,20 @@
             }
         }
 
+        me.fireEvent('dataChange', me, data);
+    };
+
+    Model.prototype.clear = function () {
+        var me = this,
+            data = me.get('data'),
+            key;
+
+        for (key in data) {
+            if (data.hasOwnProperty(key)) {
+                me.$set(key, null);
+            }
+        }
+        me.set('data', {});
         me.fireEvent('dataChange', me, data);
     };
 

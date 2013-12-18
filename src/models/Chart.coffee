@@ -108,6 +108,7 @@ Chart::recalculate = ()->
         ]
       )
     i++
+  chartsData.push([0,0]) if chartsData.length is 1
   @$set 'data', chartsData
 
 

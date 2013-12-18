@@ -97,7 +97,7 @@ Form::validateValue = ()->
 
 #resize window to custom values
 Form::resize = ()->
-  style = @queryEl('.window-vertical-center').style
+  style = @queryEl('.window').style
   style.width = @getWidth() + 'px'
 
 Form::show = (all...)->

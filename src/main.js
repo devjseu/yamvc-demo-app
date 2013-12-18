@@ -94,7 +94,6 @@
             },
             "$layout-2": {
               render: function() {
-                console.log('test');
                 return setTimeout(function() {
                   return app.mask.hide();
                 }, 500);

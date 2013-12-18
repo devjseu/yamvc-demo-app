@@ -122,6 +122,9 @@
       }
       i++;
     }
+    if (chartsData.length === 1) {
+      chartsData.push([0, 0]);
+    }
     return this.$set('data', chartsData);
   };
 

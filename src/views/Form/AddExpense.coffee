@@ -59,6 +59,8 @@ AddExpense::processForm = (e)->
     i++
   if test.length == 0
     results['date'] = +new Date(app.logic.Date.parse(results['date']))
+    @getModel('expense').clear()
+
     @getModel('expense').setData(results)
     app.mask.show()
     @getModel('expense').save()

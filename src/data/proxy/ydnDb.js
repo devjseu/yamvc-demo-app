@@ -75,6 +75,7 @@
       return callback();
     });
     req.fail(function(e) {
+      console.log(e);
       $set('status', 'error');
       $set('response', e);
       return callback();
@@ -102,9 +103,6 @@
   YdnDb.prototype.destroy = function(namespace, data, callback) {
     var $set, idProperty, req;
     idProperty = this.getIdProperty();
-    if (typeof data[idProperty] === 'object') {
-      console.log(idProperty);
-    }
     $set = this.set.bind(this);
     req = this.getDb().getConnection().remove(namespace, data[idProperty]);
     req.done(function() {

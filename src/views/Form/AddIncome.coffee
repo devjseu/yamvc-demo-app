@@ -55,6 +55,7 @@ AddIncome::processForm = (e)->
     i++
   if test.length == 0
     results['date'] = +new Date(app.logic.Date.parse(results['date']))
+    @getModel('income').clear()
     @getModel('income').setData(results)
     app.mask.show()
     @getModel('income').save()

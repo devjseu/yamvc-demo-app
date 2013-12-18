@@ -71,6 +71,7 @@ YdnDb::create = (namespace, data, callback)->
   )
   req.fail(
     (e)->
+      console.log e
       $set('status', 'error')
       $set('response', e)
       callback()
@@ -101,8 +102,6 @@ YdnDb::update = (namespace, data, callback)->
 
 YdnDb::destroy = (namespace, data, callback)->
   idProperty = @getIdProperty()
-  if typeof data[idProperty] == 'object'
-    console.log idProperty
   $set = @set.bind(@)
   req = @getDb()
   .getConnection()
