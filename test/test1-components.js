@@ -84,14 +84,15 @@
     ok(bar.getModel('balance').$get('expenses') === 0, "After initialize expenses shoudle be equal 0");
     ok(bar.getModel('balance').$get('available') === 0, "After initialize available resources shoudle be equal 0");
     bar.getModel('balance').setData({
-      expenses: 1000,
+      expenses: -1000,
       resources: 4000,
-      available: 3000
+      currentMonthExpenses: -1000
     });
+    bar.getModel('balance').recalculate();
     resources = bar.get('el').querySelector('.bar-balance-resources');
     expenses = bar.get('el').querySelector('.bar-balance-expenses');
-    equal(resources.innerHTML, '3000 zł', 'Expenses bar should contain -1000zł');
-    equal(expenses.innerHTML, '-1000 zł', 'Expenses bar should contain -1000zł');
+    equal(resources.innerHTML, '4000 €', 'Expenses bar should contain -1000€');
+    equal(expenses.innerHTML, '-1000 €', 'Expenses bar should contain -1000€');
     return this;
   });
 

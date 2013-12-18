@@ -35,8 +35,8 @@
               data: {
                 legend: 'Legend',
                 expenses: 'monthly expenses',
-                resources: 'monthly resources',
-                currentBalance: 'Current balance'
+                resources: 'available resources',
+                currentBalance: 'Current month balance'
               }
             }),
             balance: app.models.balance

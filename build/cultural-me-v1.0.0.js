@@ -572,14 +572,13 @@
   };
 
   Balance.prototype.loadResources = function() {
-    var db, from, me, q, resources, to;
+    var db, me, q, resources, to;
     me = this;
     resources = 0;
-    from = new Date(app.logic.Date.parse(this.get('from')));
     to = new Date(app.logic.Date.parse(this.get('to')));
     db = app.data.db.getConnection();
     q = db.from('incomes');
-    return q.where('date', '>=', from.getTime(), '<', to.getTime() + 24 * 60 * 60 * 1000).list().done(function(records) {
+    return q.where('date', '<', to.getTime() + 24 * 60 * 60 * 1000).list().done(function(records) {
       var i, l;
       i = 0;
       l = records.length;
@@ -596,22 +595,30 @@
   };
 
   Balance.prototype.loadExpenses = function() {
-    var db, expenses, from, me, q2, to;
+    var currentMonthExpenses, dayInMonth, db, expenses, from, me, now, q2, to;
     me = this;
     expenses = 0;
+    currentMonthExpenses = 0;
+    now = new Date();
+    dayInMonth = now.getDate() * 24 * 60 * 60 * 1000;
     from = new Date(app.logic.Date.parse(this.get('from')));
     to = new Date(app.logic.Date.parse(this.get('to')));
     db = app.data.db.getConnection();
     q2 = db.from('expenses');
-    return q2.where('date', '>=', from.getTime(), '<', to.getTime() + 24 * 60 * 60 * 1000).list().done(function(records) {
-      var i, l;
+    return q2.where('date', '<', to.getTime() + 24 * 60 * 60 * 1000).list().done(function(records) {
+      var i, l, val;
       i = 0;
       l = records.length;
       while (i < l) {
-        expenses -= parseFloat(records[i].value);
+        val = parseFloat(records[i].value);
+        expenses -= val;
+        if ((records[i].date + dayInMonth) > now.getTime()) {
+          currentMonthExpenses -= val;
+        }
         i++;
       }
       me.$set('expenses', expenses);
+      me.$set('currentMonthExpenses', currentMonthExpenses);
       me.set('toLoad', me.get('toLoad') - 1);
       if (me.get('toLoad') === 0) {
         return me.recalculate.call(me);
@@ -620,7 +627,8 @@
   };
 
   Balance.prototype.recalculate = function() {
-    return this.$set('available', this.$get('resources') + this.$get('expenses'));
+    this.$set('available', this.$get('resources') + this.$get('expenses'));
+    return this.$set('currentMonthResources', this.$get('resources') + (this.$get('expenses') - this.$get('currentMonthExpenses')));
   };
 
   Balance.prototype.all = function() {
@@ -1080,8 +1088,8 @@
   Balance.prototype.bindEvents = function() {
     this.addListener('render', this.bindElements.bind(this));
     this.addListener('render', this.ajustBarsWidth.bind(this));
-    this.getModel('balance').addListener('dataExpensesChange', this.updateBalance.bind(this));
-    this.getModel('balance').addListener('dataResourcesChange', this.updateBalance.bind(this));
+    this.getModel('balance').addListener('dataCurrentMonthExpensesChange', this.updateBalance.bind(this));
+    this.getModel('balance').addListener('dataCurrentMonthResourcesChange', this.updateBalance.bind(this));
     this.getModel('balance').addListener('dataAvailableChange', this.updateBalance.bind(this));
     this.getModel('balance').addListener('dataChange', this.updateBalance.bind(this));
     return this;
@@ -1104,8 +1112,8 @@
 
   Balance.prototype.ajustBarsWidth = function() {
     var expenses, expensesLeft, expensesWidth, resources, resourcesLeft, resourcesWidth;
-    expenses = Math.abs(this.getModel('balance').$get('expenses'));
-    resources = this.getModel('balance').$get('resources');
+    expenses = Math.abs(this.getModel('balance').$get('currentMonthExpenses'));
+    resources = this.getModel('balance').$get('currentMonthResources');
     if (expenses === 0 && resources === 0) {
       expensesWidth = 0;
       resourcesWidth = 100;
@@ -1669,8 +1677,8 @@
               data: {
                 legend: 'Legend',
                 expenses: 'monthly expenses',
-                resources: 'monthly resources',
-                currentBalance: 'Current balance'
+                resources: 'available resources',
+                currentBalance: 'Current month balance'
               }
             }),
             balance: app.models.balance

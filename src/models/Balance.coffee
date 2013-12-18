@@ -40,11 +40,10 @@ Balance::load = ()->
 Balance::loadResources = ()->
   me = @
   resources = 0
-  from = new Date(app.logic.Date.parse(@get 'from'))
   to = new Date(app.logic.Date.parse(@get 'to'))
   db = app.data.db.getConnection()
   q = db.from('incomes')
-  q.where('date', '>=', from.getTime(), '<', to.getTime() + 24*60*60*1000)
+  q.where('date', '<', to.getTime() + 24*60*60*1000)
   .list()
   .done(
       (records)->
@@ -62,20 +61,27 @@ Balance::loadResources = ()->
 Balance::loadExpenses = ()->
   me = @
   expenses = 0
+  currentMonthExpenses = 0
+  now = new Date()
+  dayInMonth = now.getDate() * 24*60*60*1000
   from = new Date(app.logic.Date.parse(@get 'from'))
   to = new Date(app.logic.Date.parse(@get 'to'))
   db = app.data.db.getConnection()
   q2 = db.from('expenses')
-  q2.where('date', '>=', from.getTime(), '<', to.getTime() + 24*60*60*1000)
+  q2.where('date', '<', to.getTime() + 24*60*60*1000)
   .list()
   .done(
       (records)->
         i = 0
         l = records.length
         while (i < l)
-          expenses -= parseFloat(records[i].value)
+          val = parseFloat(records[i].value)
+          expenses -= val
+          if ((records[i].date + dayInMonth) > now.getTime())
+            currentMonthExpenses -= val
           i++
         me.$set 'expenses', expenses
+        me.$set 'currentMonthExpenses', currentMonthExpenses
         me.set 'toLoad', me.get('toLoad') - 1
         if me.get('toLoad') is 0
           me.recalculate.call(me)
@@ -83,6 +89,7 @@ Balance::loadExpenses = ()->
 
 Balance::recalculate = ()->
   @$set 'available', (@$get('resources') + @$get('expenses'))
+  @$set 'currentMonthResources', (@$get('resources') + (@$get('expenses') - @$get('currentMonthExpenses')))
 
 Balance::all = (all...)->
 

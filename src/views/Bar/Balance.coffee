@@ -16,8 +16,8 @@ Balance::init = (all...)->
 Balance::bindEvents = ()->
   @addListener('render', @bindElements.bind(@))
   @addListener('render', @ajustBarsWidth.bind(@))
-  @getModel('balance').addListener('dataExpensesChange', @updateBalance.bind(@))
-  @getModel('balance').addListener('dataResourcesChange', @updateBalance.bind(@))
+  @getModel('balance').addListener('dataCurrentMonthExpensesChange', @updateBalance.bind(@))
+  @getModel('balance').addListener('dataCurrentMonthResourcesChange', @updateBalance.bind(@))
   @getModel('balance').addListener('dataAvailableChange', @updateBalance.bind(@))
   @getModel('balance').addListener('dataChange', @updateBalance.bind(@))
   @
@@ -37,8 +37,8 @@ Balance::updateBalance = ()->
   @
 
 Balance::ajustBarsWidth = ()->
-  expenses = Math.abs(@getModel('balance').$get('expenses'))
-  resources = @getModel('balance').$get('resources')
+  expenses = Math.abs(@getModel('balance').$get('currentMonthExpenses'))
+  resources = @getModel('balance').$get('currentMonthResources')
   if expenses == 0 and resources == 0
     expensesWidth = 0
     resourcesWidth = 100

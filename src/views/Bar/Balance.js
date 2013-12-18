@@ -27,8 +27,8 @@
   Balance.prototype.bindEvents = function() {
     this.addListener('render', this.bindElements.bind(this));
     this.addListener('render', this.ajustBarsWidth.bind(this));
-    this.getModel('balance').addListener('dataExpensesChange', this.updateBalance.bind(this));
-    this.getModel('balance').addListener('dataResourcesChange', this.updateBalance.bind(this));
+    this.getModel('balance').addListener('dataCurrentMonthExpensesChange', this.updateBalance.bind(this));
+    this.getModel('balance').addListener('dataCurrentMonthResourcesChange', this.updateBalance.bind(this));
     this.getModel('balance').addListener('dataAvailableChange', this.updateBalance.bind(this));
     this.getModel('balance').addListener('dataChange', this.updateBalance.bind(this));
     return this;
@@ -51,8 +51,8 @@
 
   Balance.prototype.ajustBarsWidth = function() {
     var expenses, expensesLeft, expensesWidth, resources, resourcesLeft, resourcesWidth;
-    expenses = Math.abs(this.getModel('balance').$get('expenses'));
-    resources = this.getModel('balance').$get('resources');
+    expenses = Math.abs(this.getModel('balance').$get('currentMonthExpenses'));
+    resources = this.getModel('balance').$get('currentMonthResources');
     if (expenses === 0 && resources === 0) {
       expensesWidth = 0;
       resourcesWidth = 100;

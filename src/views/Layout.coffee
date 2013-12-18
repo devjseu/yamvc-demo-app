@@ -26,8 +26,8 @@ Layout::init = (all...)->
             data:
               legend: 'Legend'
               expenses: 'monthly expenses'
-              resources: 'monthly resources'
-              currentBalance: 'Current balance'
+              resources: 'available resources'
+              currentBalance: 'Current month balance'
         #assign static model
           balance: app.models.balance
   #action bar

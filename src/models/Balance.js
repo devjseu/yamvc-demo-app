@@ -53,14 +53,13 @@
   };
 
   Balance.prototype.loadResources = function() {
-    var db, from, me, q, resources, to;
+    var db, me, q, resources, to;
     me = this;
     resources = 0;
-    from = new Date(app.logic.Date.parse(this.get('from')));
     to = new Date(app.logic.Date.parse(this.get('to')));
     db = app.data.db.getConnection();
     q = db.from('incomes');
-    return q.where('date', '>=', from.getTime(), '<', to.getTime() + 24 * 60 * 60 * 1000).list().done(function(records) {
+    return q.where('date', '<', to.getTime() + 24 * 60 * 60 * 1000).list().done(function(records) {
       var i, l;
       i = 0;
       l = records.length;
@@ -77,22 +76,30 @@
   };
 
   Balance.prototype.loadExpenses = function() {
-    var db, expenses, from, me, q2, to;
+    var currentMonthExpenses, dayInMonth, db, expenses, from, me, now, q2, to;
     me = this;
     expenses = 0;
+    currentMonthExpenses = 0;
+    now = new Date();
+    dayInMonth = now.getDate() * 24 * 60 * 60 * 1000;
     from = new Date(app.logic.Date.parse(this.get('from')));
     to = new Date(app.logic.Date.parse(this.get('to')));
     db = app.data.db.getConnection();
     q2 = db.from('expenses');
-    return q2.where('date', '>=', from.getTime(), '<', to.getTime() + 24 * 60 * 60 * 1000).list().done(function(records) {
-      var i, l;
+    return q2.where('date', '<', to.getTime() + 24 * 60 * 60 * 1000).list().done(function(records) {
+      var i, l, val;
       i = 0;
       l = records.length;
       while (i < l) {
-        expenses -= parseFloat(records[i].value);
+        val = parseFloat(records[i].value);
+        expenses -= val;
+        if ((records[i].date + dayInMonth) > now.getTime()) {
+          currentMonthExpenses -= val;
+        }
         i++;
       }
       me.$set('expenses', expenses);
+      me.$set('currentMonthExpenses', currentMonthExpenses);
       me.set('toLoad', me.get('toLoad') - 1);
       if (me.get('toLoad') === 0) {
         return me.recalculate.call(me);
@@ -101,7 +108,8 @@
   };
 
   Balance.prototype.recalculate = function() {
-    return this.$set('available', this.$get('resources') + this.$get('expenses'));
+    this.$set('available', this.$get('resources') + this.$get('expenses'));
+    return this.$set('currentMonthResources', this.$get('resources') + (this.$get('expenses') - this.$get('currentMonthExpenses')));
   };
 
   Balance.prototype.all = function() {
