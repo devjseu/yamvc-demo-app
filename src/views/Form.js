@@ -78,9 +78,9 @@
   };
 
   Form.prototype.bindDOMEvents = function() {
-    this.queryEl('#form-name').addEventListener('keyup', this.validateName.bind(this));
-    this.queryEl('#form-date').addEventListener('keyup', this.validateDate.bind(this));
-    this.queryEl('#form-value').addEventListener('keyup', this.validateValue.bind(this));
+    this.queryEl('.form-name').addEventListener('keyup', this.validateName.bind(this));
+    this.queryEl('.form-date').addEventListener('keyup', this.validateDate.bind(this));
+    this.queryEl('.form-value').addEventListener('keyup', this.validateValue.bind(this));
     return this.queryEl('.bottom-bar a').addEventListener('click', this.processForm.bind(this), false);
   };
 
@@ -88,32 +88,33 @@
 
   Form.prototype.validateName = function() {
     var value;
-    value = this.queryEl('#form-name').value;
+    value = this.queryEl('.form-name').value;
     if (value && value.length > 3) {
-      return this.queryEl('#form-name').setAttribute('class', '');
+      return this.queryEl('.form-name').setAttribute('class', 'form-name');
     } else {
-      return this.queryEl('#form-name').setAttribute('class', 'invalid');
+      return this.queryEl('.form-name').setAttribute('class', 'form-name invalid');
     }
   };
 
   Form.prototype.validateDate = function() {
-    var value;
-    value = this.queryEl('#form-date').value;
-    if (app.logic.Date.parse(value)) {
-      return this.queryEl('#form-date').setAttribute('class', '');
+    var parseDate, value;
+    value = this.queryEl('.form-date').value;
+    parseDate = app.logic.Date.parse(value);
+    if (parseDate !== null) {
+      return this.queryEl('.form-date').setAttribute('class', 'form-date');
     } else {
-      return this.queryEl('#form-date').setAttribute('class', 'invalid');
+      return this.queryEl('.form-date').setAttribute('class', 'form-date invalid');
     }
   };
 
   Form.prototype.validateValue = function() {
     var test, value;
-    value = this.queryEl('#form-value').value;
+    value = this.queryEl('.form-value').value;
     test = /^\s*(\+|-)?((\d+(\.\d+)?)|(\.\d+))\s*$/;
     if (test.test(value)) {
-      return this.queryEl('#form-value').setAttribute('class', '');
+      return this.queryEl('.form-value').setAttribute('class', 'form-value');
     } else {
-      return this.queryEl('#form-value').setAttribute('class', 'invalid');
+      return this.queryEl('.form-value').setAttribute('class', 'form-value invalid');
     }
   };
 

@@ -50,7 +50,8 @@ AddIncome::processForm = (e)->
   i = 0
   l = inputs.length
   while (i < l)
-    test.push 1 if inputs[i].getAttribute('class').search(/invalid/) > -1
+    className = inputs[i].getAttribute('class') || ""
+    test.push 1 if className.search(/invalid/) > -1
     results[inputs[i].name] = inputs[i].value
     i++
   if test.length == 0

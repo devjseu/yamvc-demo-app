@@ -62,9 +62,9 @@ Form::bindClose = ()->
 
 #bind all interactions with DOM
 Form::bindDOMEvents = ()->
-  @queryEl('#form-name').addEventListener('keyup',@validateName.bind(@))
-  @queryEl('#form-date').addEventListener('keyup',@validateDate.bind(@))
-  @queryEl('#form-value').addEventListener('keyup',@validateValue.bind(@))
+  @queryEl('.form-name').addEventListener('keyup',@validateName.bind(@))
+  @queryEl('.form-date').addEventListener('keyup',@validateDate.bind(@))
+  @queryEl('.form-value').addEventListener('keyup',@validateValue.bind(@))
   @queryEl('.bottom-bar a').addEventListener('click',@processForm.bind(@), false)
 
 #abstract
@@ -72,28 +72,29 @@ Form::processForm = () ->
 
 #validate field name
 Form::validateName = ()->
-  value = @queryEl('#form-name').value
+  value = @queryEl('.form-name').value
   if value && value.length > 3
-    @queryEl('#form-name').setAttribute 'class', ''
+    @queryEl('.form-name').setAttribute 'class', 'form-name'
   else
-    @queryEl('#form-name').setAttribute 'class', 'invalid'
+    @queryEl('.form-name').setAttribute 'class', 'form-name invalid'
 
 #validate field date
 Form::validateDate = ()->
-  value = @queryEl('#form-date').value
-  if app.logic.Date.parse(value)
-    @queryEl('#form-date').setAttribute 'class', ''
+  value = @queryEl('.form-date').value
+  parseDate = app.logic.Date.parse(value)
+  if parseDate != null
+    @queryEl('.form-date').setAttribute 'class', 'form-date'
   else
-    @queryEl('#form-date').setAttribute 'class','invalid'
+    @queryEl('.form-date').setAttribute 'class','form-date invalid'
 
 #validate field value
 Form::validateValue = ()->
-  value = @queryEl('#form-value').value
+  value = @queryEl('.form-value').value
   test = /^\s*(\+|-)?((\d+(\.\d+)?)|(\.\d+))\s*$/
   if test.test(value)
-    @queryEl('#form-value').setAttribute 'class', ''
+    @queryEl('.form-value').setAttribute 'class', 'form-value'
   else
-    @queryEl('#form-value').setAttribute 'class','invalid'
+    @queryEl('.form-value').setAttribute 'class','form-value invalid'
 
 #resize window to custom values
 Form::resize = ()->

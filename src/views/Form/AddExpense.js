@@ -63,7 +63,7 @@
   };
 
   AddExpense.prototype.processForm = function(e) {
-    var i, inputs, l, results, test;
+    var className, i, inputs, l, results, test;
     e.preventDefault();
     test = [];
     inputs = this.queryEls('form input');
@@ -74,7 +74,8 @@
     i = 0;
     l = inputs.length;
     while (i < l) {
-      if (inputs[i].getAttribute('class').search(/invalid/) > -1) {
+      className = inputs[i].getAttribute('class') || "";
+      if (className.search(/invalid/) > -1) {
         test.push(1);
       }
       results[inputs[i].name] = inputs[i].value;
