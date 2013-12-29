@@ -9,7 +9,7 @@
   app.init = function() {
     app.data.db = new app.data.Db({
       config: {
-        name: 'culturalMe',
+        name: 'yamvcDemo',
         schema: {
           stores: [
             {

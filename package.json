@@ -1,5 +1,5 @@
 {
-  "name": "cultural-me",
+  "name": "yamvc-demo",
   "version": "1.0.0",
   "description": "Demo application",
   "main": "./src/main.js",

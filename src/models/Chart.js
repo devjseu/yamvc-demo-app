@@ -29,7 +29,7 @@
     initOpts = this.get('initOpts');
     initOpts.data = {
       type: 'AreaChart',
-      title: 'Long term balance',
+      title: 'Last 30 days and predictions',
       isStacked: true,
       data: [['Day', 'Balance'], ['1', 0]]
     };

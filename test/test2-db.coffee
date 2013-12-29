@@ -1,6 +1,6 @@
 app.data.db = new app.data.Db
   config:
-    name: 'culturalMeTest'
+    name: 'yamvcDemoTest'
     schema :
       stores: [
           name: 'incomes'

@@ -17,7 +17,7 @@ Chart::initConfig = (all...)->
   #define default data
   initOpts.data =
     type: 'AreaChart'
-    title: 'Long term balance'
+    title: 'Last 30 days and predictions'
     isStacked: true
     data: [
       ['Day', 'Balance']
@@ -74,7 +74,6 @@ Chart::loadExpenses = ()->
             date: records[i].date
             value: -parseFloat(records[i].value)
           i++
-
         me.set 'expenses', expenses
         me.set 'toLoad', me.get('toLoad') - 1
         if me.get('toLoad') is 0
