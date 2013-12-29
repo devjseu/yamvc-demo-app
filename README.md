@@ -5,7 +5,7 @@ Money management app
 ##Requiments
 * node.js
 * Bower
-* Browser supporting IndexedDB (IE10+, Chrome 23+, FF10+, Opera 15+, Android 4.4+ Opera Mobile 16+, Chrome for Android 31+ FF for Android 25+, IE Mobile 10+)
+* Browser supporting IndexedDB or WebSQL
 
 ##Installation
 Project use both Bower and npm package managers to resolve dependencies.
