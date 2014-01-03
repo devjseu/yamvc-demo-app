@@ -42,3 +42,7 @@ nserver
 ```
 There are two ways to open project in browser. First, using `index.html` and this is production environment and
 second using `index-dev.html` where all source files are loaded separately.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/devjseu/yamvc-demo-app/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
